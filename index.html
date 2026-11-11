@@ -3,27 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商用統計學期中考 | 全範圍作業視覺化速查系統</title>
+    <title>商用統計學期中總複習 ＆ 考點互動刷題系統</title>
     <style>
         :root {
             --bg-base: #F8FAFC;
             --bg-surface: #FFFFFF;
             --bg-card: #FFFFFF;
             --text-primary: #0F172A;
-            --text-secondary: #475569;
+            --text-secondary: #334155;
             --text-muted: #64748B;
             --border-subtle: #E2E8F0;
             --border-strong: #CBD5E1;
             --navy-primary: #0F2847;
+            --navy-secondary: #1E3E62;
             --navy-accent: #1F4E79;
             --emerald-bg: #ECFDF5;
             --emerald-border: #10B981;
             --emerald-text: #065F46;
-            --accent-red: #DC2626;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 14px rgba(0,0,0,0.06);
+            --danger-bg: #FEF2F2;
+            --danger-border: #EF4444;
+            --danger-text: #991B1B;
+            --amber-bg: #FFFBEB;
+            --amber-border: #F59E0B;
+            --amber-text: #92400E;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(15, 40, 71, 0.06);
+            --shadow-md: 0 4px 16px rgba(15, 40, 71, 0.07);
+            --shadow-lg: 0 10px 30px rgba(15, 40, 71, 0.12);
+            --spring-transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         [data-theme="dark"] {
@@ -36,68 +46,144 @@
             --border-subtle: #243252;
             --border-strong: #33446B;
             --navy-primary: #1E3A8A;
+            --navy-secondary: #2563EB;
             --navy-accent: #3B82F6;
             --emerald-bg: #064E3B;
             --emerald-border: #059669;
             --emerald-text: #A7F3D0;
+            --danger-bg: #450A0A;
+            --danger-border: #DC2626;
+            --danger-text: #FECACA;
+            --amber-bg: #451A03;
+            --amber-border: #D97706;
+            --amber-text: #FDE68A;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", Roboto, sans-serif;
             background-color: var(--bg-base);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.55;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--navy-primary) 0%, #1E3E62 100%);
+            background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-secondary) 100%);
             color: white;
-            padding: 32px 24px 28px;
-            box-shadow: 0 4px 20px rgba(15, 40, 71, 0.25);
+            padding: 24px 20px 20px;
+            box-shadow: 0 4px 24px rgba(15, 40, 71, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .header-content {
+        .header-inner {
             max-width: 1280px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
+        }
+        .brand-wrap h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .brand-pill {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-        .header-sub { font-size: 14px; opacity: 0.85; margin-top: 4px; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .btn {
+            font-size: 11.5px;
+            font-weight: 700;
             background: rgba(255,255,255,0.18);
             border: 1px solid rgba(255,255,255,0.3);
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            letter-spacing: 0.3px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.25);
             color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13.5px;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--spring-transition);
         }
-        .btn:hover { background: rgba(255,255,255,0.28); transform: translateY(-1px); }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-1px);
+        }
 
-        /* Main Container */
+        /* Mode Switcher Bar */
+        .mode-switcher {
+            display: flex;
+            background: rgba(0, 0, 0, 0.22);
+            padding: 4px;
+            border-radius: 12px;
+            gap: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .mode-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 9px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--spring-transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .mode-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .mode-btn.active {
+            background: white;
+            color: var(--navy-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        [data-theme="dark"] .mode-btn.active {
+            background: var(--navy-accent);
+            color: white;
+        }
+
+        /* Container */
         .container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 24px 20px;
+            padding: 24px 20px 60px;
+            width: 100%;
+            flex: 1;
         }
 
         /* Alert Banner */
@@ -106,20 +192,27 @@
             border: 1.5px solid #F87171;
             border-left: 6px solid #DC2626;
             border-radius: var(--radius-md);
-            padding: 14px 18px;
-            margin-bottom: 24px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
             color: #7F1D1D;
+            font-size: 13.5px;
         }
-        .alert-banner strong { color: #B91C1C; font-size: 15px; }
+        [data-theme="dark"] .alert-banner {
+            background: #450A0A;
+            border-color: #B91C1C;
+            color: #FECACA;
+        }
+        .alert-banner strong { color: #B91C1C; }
+        [data-theme="dark"] .alert-banner strong { color: #FCA5A5; }
 
-        /* Toolbar */
+        /* Toolbar & Controls */
         .toolbar {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             padding: 16px;
             margin-bottom: 24px;
             box-shadow: var(--shadow-sm);
@@ -127,31 +220,32 @@
         .search-box {
             width: 100%;
             padding: 12px 16px;
-            font-size: 15px;
+            font-size: 14.5px;
             border: 1.5px solid var(--border-strong);
             border-radius: 10px;
             outline: none;
             background: var(--bg-card);
             color: var(--text-primary);
-            transition: border-color 0.2s;
+            transition: var(--spring-transition);
         }
-        .search-box:focus { border-color: var(--navy-accent); }
+        .search-box:focus { border-color: var(--navy-accent); box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.15); }
+        
         .filter-tabs {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 12px;
         }
         .tab-btn {
             background: var(--bg-base);
             border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
             padding: 6px 14px;
-            border-radius: 20px;
+            border-radius: var(--radius-full);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: var(--spring-transition);
         }
         .tab-btn:hover { border-color: var(--navy-accent); color: var(--navy-accent); }
         .tab-btn.active {
@@ -160,7 +254,7 @@
             color: white;
         }
 
-        /* Grid & Cards */
+        /* View 1: Homework Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -169,14 +263,14 @@
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             overflow: hidden;
             box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: var(--spring-transition);
         }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.08); }
+        .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
         .card-header {
             background: var(--navy-primary);
             color: white;
@@ -198,29 +292,20 @@
             background: var(--bg-base);
             border: 1px solid var(--border-subtle);
             border-left: 4px solid var(--navy-accent);
-            padding: 10px 12px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 13.5px;
             color: var(--text-secondary);
+            white-space: pre-line;
         }
-        .calc-box {
-            background: var(--bg-surface);
-            border: 1.5px solid var(--border-strong);
+        .calc-preview {
+            border: 1px solid var(--border-strong);
             border-radius: 8px;
-            padding: 12px;
+            overflow: hidden;
+            background: #FFFFFF;
+            cursor: pointer;
         }
-        .calc-title { font-size: 12.5px; font-weight: 700; color: var(--navy-accent); margin-bottom: 8px; }
-        .calc-step { font-size: 13px; margin-bottom: 6px; }
-        .calc-step .step-badge {
-            display: inline-block;
-            background: #E2E8F0;
-            color: #1E293B;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 1px 6px;
-            border-radius: 4px;
-            margin-right: 6px;
-        }
+        .calc-preview img { width: 100%; height: auto; display: block; }
         .ans-badge {
             background: var(--emerald-bg);
             border: 1.2px solid var(--emerald-border);
@@ -242,12 +327,238 @@
         .chart-preview img { width: 100%; height: 180px; object-fit: contain; display: block; }
         .chart-caption { font-size: 11.5px; color: var(--text-muted); padding: 4px; background: var(--bg-base); }
 
+        /* View 2: Quiz System */
+        .quiz-view {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .quiz-view.active { display: flex; }
+        .hw-view { display: none; }
+        .hw-view.active { display: block; }
+
+        /* Quiz Stats Bar */
+        .quiz-dashboard {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .stat-val {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--navy-accent);
+        }
+        .stat-val.correct { color: #059669; }
+        .stat-val.wrong { color: #DC2626; }
+
+        .progress-bar-wrap {
+            width: 100%;
+            height: 8px;
+            background: var(--border-subtle);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10B981, #059669);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Quiz Cards */
+        .quiz-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--spring-transition);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .quiz-card:hover { box-shadow: var(--shadow-md); }
+        .quiz-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .quiz-q-num {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--navy-accent);
+            background: var(--bg-base);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-subtle);
+        }
+        .quiz-badges {
+            display: flex;
+            gap: 6px;
+        }
+        .quiz-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: #EEF2F6;
+            color: #334155;
+        }
+        [data-theme="dark"] .quiz-tag {
+            background: #243252;
+            color: #CBD5E1;
+        }
+        .quiz-tag.category {
+            background: #E0E7FF;
+            color: #3730A3;
+        }
+        [data-theme="dark"] .quiz-tag.category {
+            background: #312E81;
+            color: #C7D2FE;
+        }
+
+        .quiz-question-text {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* Options Grid */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-item {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border-strong);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: var(--spring-transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            user-select: none;
+        }
+        .option-item:hover:not(.locked) {
+            border-color: var(--navy-accent);
+            background: var(--bg-base);
+            transform: translateX(3px);
+        }
+        .option-item.locked { cursor: default; }
+        .opt-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            color: var(--text-secondary);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+            transition: var(--spring-transition);
+        }
+        
+        /* Selected States */
+        .option-item.correct {
+            border-color: var(--emerald-border);
+            background: var(--emerald-bg);
+            color: var(--emerald-text);
+        }
+        .option-item.correct .opt-letter {
+            background: var(--emerald-border);
+            color: white;
+        }
+        .option-item.wrong {
+            border-color: var(--danger-border);
+            background: var(--danger-bg);
+            color: var(--danger-text);
+        }
+        .option-item.wrong .opt-letter {
+            background: var(--danger-border);
+            color: white;
+        }
+
+        /* Explanation Box */
+        .analysis-box {
+            display: none;
+            background: #F8FAFC;
+            border: 1.5px solid var(--border-strong);
+            border-left: 5px solid #059669;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            animation: fadeIn 0.25s ease;
+        }
+        [data-theme="dark"] .analysis-box {
+            background: #111C33;
+            border-color: #243252;
+            border-left-color: #10B981;
+        }
+        .analysis-box.show { display: block; }
+        .analysis-title {
+            font-weight: 800;
+            color: #065F46;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        [data-theme="dark"] .analysis-title { color: #34D399; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            background: var(--bg-surface);
+            border-radius: var(--radius-md);
+            border: 1px dashed var(--border-strong);
+            color: var(--text-muted);
+        }
+        .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
         /* Modal */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.8);
             z-index: 999;
             align-items: center;
             justify-content: center;
@@ -271,143 +582,461 @@
             color: var(--text-primary);
             cursor: pointer;
         }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cards-grid { grid-template-columns: 1fr; }
+            .quiz-dashboard { flex-direction: column; align-items: flex-start; }
+            .brand-wrap h1 { font-size: 18px; }
+            .mode-btn { font-size: 13.5px; padding: 8px 10px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-content">
-        <div>
-            
-            <h1>商用統計學期中總複習速查系統</h1>
-            <div class="header-sub">全範圍 60 道指定基礎題 ＋ 2 道指數分配參考題・官方附錄 D 100% 精準對齊・圖表速查</div>
+    <div class="header-inner">
+        <div class="header-top">
+            <div class="brand-wrap">
+                <span class="brand-pill">商用統計學・期中考備戰神器</span>
+                <h1>商用統計學期中總複習 ＆ 考點互動刷題系統</h1>
+            </div>
+            <div class="header-actions">
+                <button class="nav-btn" onclick="toggleTheme()">🌓 切換深淺色</button>
+                <a href="期中考作業題目與簡易解答/商用統計學期中總複習速查講義.pdf" target="_blank" download class="nav-btn">📥 下載作業速查 PDF (63頁)</a>
+                <a href="期中考作業題目與簡易解答/商用統計學期中考_全章節高頻考點選擇題與解析.md" target="_blank" class="nav-btn">📝 選擇題庫解析 MD</a>
+            </div>
         </div>
-        <div class="header-actions">
-            <button class="btn" onclick="toggleTheme()">🌓 切換深淺色</button>
-            <a href="期中考作業題目與簡易解答/商用統計學期中總複習速查講義.pdf" target="_blank" download class="btn" style="text-decoration:none;">📥 下載期中總複習 PDF</a>
+
+        <!-- 雙核心功能切換器 -->
+        <div class="mode-switcher">
+            <button id="btn-mode-hw" class="mode-btn active" onclick="switchMainMode('hw')">
+                📑 功能一：作業題目與詳細解析速查 (62 題)
+            </button>
+            <button id="btn-mode-quiz" class="mode-btn" onclick="switchMainMode('quiz')">
+                🎯 功能二：期中常考重點互動刷題 (76 題選擇題)
+            </button>
         </div>
     </div>
 </header>
 
 <div class="container">
+    <!-- 範圍重要提醒 -->
     <div class="alert-banner">
-        <div style="font-size:24px;">⚠️</div>
+        <div style="font-size:22px; flex-shrink:0;">⚠️</div>
         <div>
-            <strong>【期中考範圍重要提醒：指數分配不考】</strong><br>
-            依據課本目錄照片手寫標記：「7.5 指數分配族系」已明確註記「不考」，第 7 章習題第 31、57 題原稿已劃叉 (X)。正式考試範圍為第 7 章其餘 10 題；本系統末尾亦保留 31 與 57 題作為參考。
+            <strong>【期中考重點提醒：第 7 章指數分配不考】</strong><br>
+            依據課本目錄照片原稿標記，「7.5 指數分配族系（習題 31、57 題）」明確不考！作業速查與刷題題庫均已精準對齊官方範圍。
         </div>
     </div>
 
-    <div class="toolbar">
-        <input type="text" id="search-input" class="search-box" placeholder="🔍 即時搜尋題號、題目關鍵字、統計名詞 (例如：23, 二項分配, 離群值, 柴比雪夫, 期望值)..." oninput="renderCards()">
-        <div class="filter-tabs">
-            <button class="tab-btn active" onclick="setChapter(0, this)">全部試題 (62)</button>
-            <button class="tab-btn" onclick="setChapter(2, this)">第 2 章：次數分配與圖形 (12)</button>
-            <button class="tab-btn" onclick="setChapter(3, this)">第 3 章：數值的測量 (8)</button>
-            <button class="tab-btn" onclick="setChapter(4, this)">第 4 章：展現與探索資料 (8)</button>
-            <button class="tab-btn" onclick="setChapter(5, this)">第 5 章：機率觀念概述 (12)</button>
-            <button class="tab-btn" onclick="setChapter(6, this)">第 6 章：離散型機率分配 (10)</button>
-            <button class="tab-btn" onclick="setChapter(7, this)">第 7 章：連續型機率分配 (10+2)</button>
+    <!-- ==================== 功能一：作業速查 VIEW ==================== -->
+    <div id="hw-view" class="hw-view active">
+        <div class="toolbar">
+            <input type="text" id="hw-search-input" class="search-box" placeholder="🔍 即時搜尋題號、題目關鍵字、統計名詞 (例如：23, 二項分配, 離群值, 柴比雪夫, 期望值)..." oninput="renderHwCards()">
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="setHwChapter(0, this)">全部作業試題 (62)</button>
+                <button class="tab-btn" onclick="setHwChapter(2, this)">第 2 章：次數分配與圖形 (12)</button>
+                <button class="tab-btn" onclick="setHwChapter(3, this)">第 3 章：數值的測量 (8)</button>
+                <button class="tab-btn" onclick="setHwChapter(4, this)">第 4 章：展現與探索資料 (8)</button>
+                <button class="tab-btn" onclick="setHwChapter(5, this)">第 5 章：機率觀念概述 (12)</button>
+                <button class="tab-btn" onclick="setHwChapter(6, this)">第 6 章：離散型機率分配 (10)</button>
+                <button class="tab-btn" onclick="setHwChapter(7, this)">第 7 章：連續型機率分配 (10+2)</button>
+            </div>
         </div>
+
+        <div id="hw-cards-container" class="cards-grid"></div>
     </div>
 
-    <div id="cards-container" class="cards-grid"></div>
+    <!-- ==================== 功能二：考點刷題 VIEW ==================== -->
+    <div id="quiz-view" class="quiz-view">
+        <!-- 刷題儀表板 -->
+        <div class="quiz-dashboard">
+            <div class="stat-group">
+                <div class="stat-item">
+                    <span class="stat-label">題庫總數</span>
+                    <span class="stat-val" id="stat-total">76 題</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">已作答</span>
+                    <span class="stat-val" id="stat-answered">0 題</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">正確題數</span>
+                    <span class="stat-val correct" id="stat-correct">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">錯誤題數</span>
+                    <span class="stat-val wrong" id="stat-wrong">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">當前正確率</span>
+                    <span class="stat-val" id="stat-rate">0%</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="nav-btn" style="color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-card);" onclick="toggleWrongOnly(this)">
+                    ❌ 錯題本 (<span id="wrong-count-badge">0</span>)
+                </button>
+                <button class="nav-btn" style="color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-card);" onclick="shuffleQuiz()">
+                    🔀 隨機題序
+                </button>
+                <button class="nav-btn" style="color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-card);" onclick="resetQuiz()">
+                    🔄 重置進度
+                </button>
+            </div>
+            <div class="progress-bar-wrap">
+                <div id="quiz-progress-fill" class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <!-- 刷題篩選工具列 -->
+        <div class="toolbar">
+            <input type="text" id="quiz-search-input" class="search-box" placeholder="🔍 搜尋刷題關鍵字、考點、題幹概念 (例如：名目尺度, 互斥, 貝氏定理, 超幾何, 漸近線)..." oninput="renderQuizList()">
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="setQuizChapter(0, this)">全部考點 (76)</button>
+                <button class="tab-btn" onclick="setQuizChapter(1, this)">第 1 章：統計學導論 (10)</button>
+                <button class="tab-btn" onclick="setQuizChapter(2, this)">第 2 章：次數分配與圖形 (10)</button>
+                <button class="tab-btn" onclick="setQuizChapter(3, this)">第 3 章：數值測量與偏態 (12)</button>
+                <button class="tab-btn" onclick="setQuizChapter(4, this)">第 4 章：探索資料與箱形圖 (10)</button>
+                <button class="tab-btn" onclick="setQuizChapter(5, this)">第 5 章：機率與貝氏定理 (12)</button>
+                <button class="tab-btn" onclick="setQuizChapter(6, this)">第 6 章：離散型三大分配 (12)</button>
+                <button class="tab-btn" onclick="setQuizChapter(7, this)">第 7 章：連續型機率分配 (10)</button>
+            </div>
+            <div class="filter-tabs" style="margin-top: 8px;">
+                <button class="tab-btn active" onclick="setQuizCategory('ALL', this)">全部題型</button>
+                <button class="tab-btn" onclick="setQuizCategory('觀念題', this)">💡 觀念題</button>
+                <button class="tab-btn" onclick="setQuizCategory('計算題', this)">🧮 計算題</button>
+                <button class="tab-btn" onclick="setQuizCategory('易錯陷阱題', this)">⚠️ 易錯陷阱題</button>
+            </div>
+        </div>
+
+        <!-- 題目清單 -->
+        <div id="quiz-list-container" style="display:flex; flex-direction:column; gap:16px;"></div>
+    </div>
 </div>
 
+<!-- 圖片放大 Modal -->
 <div id="image-modal" class="modal" onclick="closeModal()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <img id="modal-img" src="" alt="放大統計圖表">
-        <div id="modal-caption" style="text-align:center; margin-top:10px; font-weight:600;"></div>
+        <img id="modal-img" src="" alt="放大圖表">
+        <div id="modal-caption" style="text-align:center; margin-top:10px; font-weight:700;"></div>
     </div>
 </div>
 
 <script>
-    const questionsData = [{"id": "calc_ch2_q1", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 1", "title": "圓形圖之相對頻率與角度轉換", "question": "圓形圖顯示可樂的相對市占率。百事可樂的區塊部分有 90 度角，市占率為何？", "answer": "百事可樂的市占率為 25%（由 90° / 360° = 1/4 = 25% 得到）。", "fig": "figures/ch2_q1.png", "card_img": "figures/cards/card_calc_ch2_q1.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q9", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 9", "title": "次數分配之組數決定（2^k 法則）與組距計算", "question": "一份含有 230 筆觀測值，數值介於 $235 至 $567 之間的資料，你認為組距應設定為多少？", "answer": "2^7 = 128，2^8 = 256，因此建議分成 8 組。理論組距 i ≥ ($567 - $235) / 8 = 41.5（課本取整 41）。組距使用 45 或 50。", "fig": "figures/ch2_q9.png", "card_img": "figures/cards/card_calc_ch2_q9.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q11", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 11", "title": "工廠生產量之次數分配表建置與圖形分配詮釋", "question": "FILE 過去 16 天，Wachesaw 工廠生產數量如下表所示：\n27, 27, 27, 28, 27, 25, 25, 28, 26, 28, 26, 28, 31, 30, 26, 26\n將這些資料整理成次數分配：\na. 你認為應分成幾組？\nb. 你認為組距應設定為多少？\nc. 你認為第一組的組下限應為多少？\nd. 將這些資料整理成次數分配，並計算相對次數分配。\ne. 解釋資料分配的形狀。", "answer": "a. 2^4 = 16，因此建議分成 5 組；\nb. i ≥ (31 - 25)/5 = 1.2，組距使用 1.5；\nc. 第一組下限設為 24.0；\nd. 次數表：24.0~25.5 (2, 0.125)、25.5~27.0 (4, 0.250)、27.0~28.5 (8, 0.500)、28.5~30.0 (0, 0.000)、30.0~31.5 (2, 0.125)，總計 16 (1.000)；\ne. 生產量介於 24 和 31 之間，眾數組為 27 到 28.5（占 50%）。", "fig": "figures/ch2_q11.png", "card_img": "figures/cards/card_calc_ch2_q11.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q15", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 15", "title": "直方圖之判讀與次數、相對次數分析", "question": "Sun Ray Candles 蠟燭店各在北卡羅萊納州與南卡羅萊納州的大西洋沿岸有幾個零售商店。該店許多客戶下單並詢問出貨情況。課本圖形為該店最近 100 天內每天出貨的數目。例如，第一組顯示當天出貨數為「0 以上至 5」時有 5 天。\na. 這是哪一種圖形？\nb. 總出貨數（總天數）是多少？\nc. 組距是多少？\nd. 在「10 以上至 15」這一組的出貨數是多少？\ne. 在「10 以上至 15」這一組的相對出貨數是多少？\nf. 在「10 以上至 15」這一組的組中點是多少？\ng. 有幾天的出貨數達 25 包以上？", "answer": "a. 直方圖；  b. 100 天；  c. 5；  d. 28 天；  e. 0.28；  f. 12.5；  g. 13 天。", "fig": "figures/ch2_q15.png", "card_img": "figures/cards/card_calc_ch2_q15.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q17", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 17", "title": "次數多邊形圖之繪製原理與座標點計算", "question": "右列的次數分配顯示了 Brumley 統計顧問公司員工在最近一季搭機里程數的統計數據：\n（分組：0 以上至 3 千英里 5 人、3 以上至 6 千英里 12 人、6 以上至 9 千英里 23 人、9 以上至 12 千英里 8 人、12 以上至 15 千英里 2 人，總計 50 人）\na. 在資料中，有多少個員工？\nb. 第一組的組中點是多少？\nc. 以這些資料製作直方圖。\nd. 所繪製的次數多邊形圖中，第一組的點座標是多少？\ne. 以這些資料製作次數多邊形圖。\nf. 使用直方圖與次數多邊形圖說明員工搭機的累積里程數。", "answer": "a. 50；  b. 1,500 英里；  c. 直方圖如圖；  d. X = 1.5，Y = 5；  e. 次數多邊形圖如圖；  f. 50 名員工中，大約有一半出差的里程數在 6,000 至 9,000 英里間。有 5 名員工出差的里程數在 3,000 英里以下，以及 2 名員工超過 12,000 英里。", "fig": "figures/ch2_q17.png", "card_img": "figures/cards/card_calc_ch2_q17.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q19", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 19", "title": "累加次數多邊形圖（肩峰圖 Ogive）之百分位數判讀", "question": "課本圖形為 40 名焊接工時薪之累加次數多邊形圖（肩峰圖）。\na. 調查了多少名焊接工？\nb. 組距是多少？\nc. 有多少名工人的時薪少於 $15？\nd. 75% 的工人之時薪少於多少？\ne. 50% 的工人之時薪少於多少？\nf. 大約有多少百分比的工人工資少於 $20？", "answer": "a. 40；  b. 5；  c. 11 或 12；  d. 約 $18 ╱小時；  e. 約 $9 ╱小時；  f. 約 75%。", "fig": "figures/ch2_q19.png", "card_img": "figures/cards/card_calc_ch2_q19.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q21", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 21", "title": "次數分配轉換為累加次數分配與肩峰圖繪製", "question": "右列的次數分配是 Brumley 統計顧問公司員工搭乘飛機的累積飛行里程數之統計數字（請參考習題 17）：\na. 有多少員工搭乘的里程數小於 3,000 英里？\nb. 將次數分配轉換成累加次數分配。\nc. 將累加次數分配繪製成累加次數多邊形圖。\nd. 根據累加次數多邊形圖，約有 75% 的員工飛行里程數小於等於多少？", "answer": "a. 5 人；\nb. 累加次數表：小於 3: 5, 小於 6: 17, 小於 9: 40, 小於 12: 48, 小於 15: 50；\nc. 肩峰圖如圖；\nd. 約 8,700 英里。", "fig": "figures/ch2_q21.png", "card_img": "figures/cards/card_calc_ch2_q21.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q23", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 23", "title": "質變數與量變數之比較與測量尺度歸納", "question": "質變數與量變數有何不同？請以測量尺度加以說明。\na. 質變數與量變數的測量尺度有何差異？\nb. 兩種變數皆可用於樣本或母體嗎？", "answer": "a. 質變數使用名目或順序的測量尺度，通常為計數的結果。量變數為離散型或連續型，其結果有自然的順序，可使用區間或比例的測量尺度；\nb. 兩種變數皆可用於樣本或母體。", "fig": "figures/ch2_q23.png", "card_img": "figures/cards/card_calc_ch2_q23.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q25", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 25", "title": "次數表與長條圖、圓形圖之商務決策呈現", "question": "Myrtle Beach 度假村調查顧客最喜歡的休閒活動，結果包含沒有計畫、健行、泛舟與泡溫泉等。\na. 這是哪一種表格？\nb. 繪製長條圖。\nc. 繪製圓形圖。\nd. 哪一種圖形較好？為什麼？", "answer": "a. 次數表；  b. 長條圖如圖；  c. 圓形圖如圖；  d. 圓形圖較好，因為比較容易看出接近一半的旅客喜歡沒有計畫的休閒活動。", "fig": "figures/ch2_q25.png", "card_img": "figures/cards/card_calc_ch2_q25.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q27", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 27", "title": "次數分配分組組數之判定（2^k 法則）", "question": "一組包含 83 筆觀測值的資料，建議分成幾組？", "answer": "2^6 = 64，2^7 = 128，建議分成 7 組。", "fig": "figures/ch2_q27.png", "card_img": "figures/cards/card_calc_ch2_q27.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q29", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 29", "title": "員工通勤時間之次數分配表編製與分配特徵分析", "question": "25 位員工通勤時間（分鐘）資料如下：\n15, 23, 27, 31, 16, 24, 28, 33, 18, 25, 29, 35, 20, 26, 30, 38, 21, 26, 30, 42, 22, 27, 31, 48, 22\na. 建議分成幾組？\nb. 組距設定為多少？\nc. 第一組組下限為何？\nd. 整理成次數分配。\ne. 解釋次數分配的特徵。", "answer": "a. 5，因為 2^4 = 16 < 25 且 2^5 = 32 > 25；\nb. i ≥ (48 - 16)/5 = 6.4，組距使用 7；\nc. 15；\nd. 次數分配：15~22 (3), 22~29 (8), 29~36 (7), 36~43 (5), 43~50 (2)，總計 25；\ne. 通勤時間在 15 到 50 分鐘之間，最常見為 22 到 36 分鐘，超過 43 分鐘非常罕見。", "fig": "figures/ch2_q29.png", "card_img": "figures/cards/card_calc_ch2_q29.png", "lines": [], "badge": ""}, {"id": "calc_ch2_q31", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 31", "title": "大學生觀影次數分配建構與鐘形對稱性檢驗", "question": "45 位大學生上個月觀看電影的次數資料。\na. 建議分成幾組？\nb. 組距設定為多少？\nc. 第一組組下限為何？\nd. 整理成次數分配。\ne. 描述分配的形狀。", "answer": "a. 2^5 = 32，2^6 = 64，把全部資料分成 6 組；\nb. i = (10 - 1)/6 = 1.5，選擇組距為 2；\nc. 0；\nd. 次數分配：0~2 (1), 2~4 (5), 4~6 (12), 6~8 (17), 8~10 (8), 10~12 (2)；\ne. 此分配相當對稱或呈現鐘形分配，眾數在 4 以上至 8 這兩組之間。", "fig": "figures/ch2_q31.png", "card_img": "figures/cards/card_calc_ch2_q31.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q43", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 43", "title": "母體平均數與母體變異數之計算", "question": "考慮以下 5 筆母體數值：8, 3, 7, 3, 4。\na. 計算母體平均數。\nb. 計算母體變異數。", "answer": "a. 5；  b. 4.4，由 ((8-5)^2 + (3-5)^2 + (7-5)^2 + (3-5)^2 + (4-5)^2)/5 得到（標準差為 2.0976）。", "fig": "figures/ch3_q43.png", "card_img": "figures/cards/card_calc_ch3_q43.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q53", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 53", "title": "樣本平均數、樣本變異數與樣本標準差之計算", "question": "考慮以下 10 筆樣本數值：\n101, 95, 99, 93, 89, 97, 94, 98, 97, 88。\na. 計算樣本平均數。\nb. 計算樣本變異數與樣本標準差。", "answer": "a. x̄ = 951/10 = 95.1；  b. s^2 = 1,112.9/9 = 123.66，s = √123.66 = 11.12。", "fig": "figures/ch3_q53.png", "card_img": "figures/cards/card_calc_ch3_q53.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q55", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 55", "title": "柴比雪夫定理（Chebyshev's Theorem）之資料比例推估", "question": "根據柴比雪夫定理，至少有多少百分比的資料會落在平均數加減 1.8 個標準差之內？", "answer": "約 69%，由 1 - 1/(1.8)^2 得到（精確值為 69.14%）。", "fig": "figures/ch3_q55.png", "card_img": "figures/cards/card_calc_ch3_q55.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q57", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 57", "title": "常態鐘形分配之經驗法則（Empirical Rule）應用", "question": "某穀片包裝重量依循常態分配，平均數為 x̄，標準差為 s。\na. 大約有多少百分比的穀片盒重量會介於 x̄ - 2s 與 x̄ + 2s 之間？\nb. 大約有多少百分比的穀片盒重量會大於 x̄ + 2s？", "answer": "a. 約 95%；\nb. 鐘形分佈是對稱的。x̄ + 2s 是 95% 的一半，或是 47.5%。整條曲線是 100%；高於平均數的整個一半是 50%。所以，(50% - 47.5%) = 2.5% 的重量高於 x̄ + 2s。", "fig": "figures/ch3_q57.png", "card_img": "figures/cards/card_calc_ch3_q57.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q59", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 59", "title": "母體平均數、中位數與離差總和恆為零之證明", "question": "某法律事務所 5 位資深合夥人去年承辦案件數為：6, 4, 3, 7, 5。\na. 計算平均數與中位數。\nb. 這是母體平均數還是樣本平均數？為什麼？\nc. 證明數值與平均數之離差總和恆為 0：Σ(x - μ) = 0。", "answer": "a. 平均數 = 5，由 (6 + 4 + 3 + 7 + 5)/5 得到。中位數 = 5，由排序完後的數值 (3,4,5,6,7) 中選取中間的數值而得出；\nb. 母體平均數，因為資料來自所有的資深合夥人；\nc. Σ(x - μ) = (6 - 5) + (4 - 5) + (3 - 5) + (7 - 5) + (5 - 5) = 0。", "fig": "figures/ch3_q59.png", "card_img": "figures/cards/card_calc_ch3_q59.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q65", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 65", "title": "產品成本與長度之加權平均數（Weighted Mean）計算", "question": "某承包商購買三批圍籬，數量與每英尺價格分別為：270 英尺（每英尺 $5.00）、300 英尺（每英尺 $6.50）、100 英尺（每英尺 $8.00）。\n求每英尺圍籬的加權平均成本。", "answer": "x̄w = ($5.00(270) + $6.50(300) + $8.00(100)) / (270 + 300 + 100) = $4,100 / 670 = $6.12。", "fig": "figures/ch3_q65.png", "card_img": "figures/cards/card_calc_ch3_q65.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q75", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 75", "title": "阿波羅太空計畫飛行時間之母體平均數、中位數、全距與標準差", "question": "NASA 阿波羅計畫全部 13 次載人飛行任務的飛行時間（小時）資料。\na. 這是母體還是樣本？為什麼？\nb. 計算平均數與中位數。\nc. 計算全距與標準差。", "answer": "a. 因為資料中有 13 次飛行時間，所以全部的任務都考慮，為母體；\nb. μ = 2,259/13 = 173.77，中位數 = 195；\nc. 全距 = 301 - 7 = 294，s = √(133,846/13) = 101.47。", "fig": "figures/ch3_q75.png", "card_img": "figures/cards/card_calc_ch3_q75.png", "lines": [], "badge": ""}, {"id": "calc_ch3_q77", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 77", "title": "大學生開銷平均數、標準差與 95% 經驗法則", "question": "25 位大學生每學期教科書開銷資料。\na. 計算平均數、中位數與眾數。\nb. 計算全距與標準差。\nc. 根據經驗法則，大約 95% 的開銷落在哪個區間？\nd. 若資料分組為 30 筆，計算分組平均數與標準差。", "answer": "a. 平均數為 $717.20，由 $17,930/25 得到。中位數為 $717.00。有兩個眾數 $710 與 $722；\nb. 全距為 $90，由 $771 - $681 = $90 得到，標準差為 $24.87，由取 14,850/24 的平方根得到；\nc. $667.46 至 $766.94，由 $717.20 ± 2($24.87) 得出；\nd. x̄ = 270/30 = 9.0，s = √(366/(30-1)) = 3.552。分組資料的平均數和標準差是實際數值的平均數和標準差的估計值。", "fig": "figures/ch3_q77.png", "card_img": "figures/cards/card_calc_ch3_q77.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q5", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 5", "title": "四分位數 (Quartiles) 定位計算", "question": "考慮以下 11 筆排序後的樣本資料：\n43, 47, 49, 51, 52, 53, 54, 55, 55, 56, 57。\n計算中位數、第一個四分位數 (Q1) 與第三個四分位數 (Q3)，並說明其意涵。", "answer": "中位數 = 53，由 (11 + 1)(1/2) 而得，所以是從最小的值算起，排序第六的數值。中位數表示 11 個觀測值中有 50% 小於 53；\nQ1 = 49，由 (11 + 1)(1/4) 而得，所以是從最小的值算起，排序第三的數值。第一個四分位數表示 11 個觀測值中有 25% 小於 49；\nQ3 = 55，由 (11 + 1)(3/4) 而得，所以是從最小的值算起，排序第九的數值。第三個四分位數表示 11 個觀測值中有 75% 小於 55。", "fig": "figures/ch4_q5.png", "card_img": "figures/cards/card_calc_ch4_q5.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q9", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 9", "title": "箱形圖 (Box Plot) 與離群值檢驗", "question": "課本圖形為某大都會區住屋價格的箱形圖。\na. 房屋價格的中位數是多少？\nb. 第一個四分位數與第三個四分位數是多少？\nc. 四分位距是多少？\nd. 離群值的上限是多少？\ne. 資料中是否存在離群值？\nf. 解釋資料分配的形狀。", "answer": "a. 800；  b. Q1 = 500，Q3 = 1,200；  c. 700，由 1,200 − 500 得出；  d. 離群值的上限是 1,200 + 1.5(700) = 1,200 + 1,050 = 2,250；  e. 沒有離群值；  f. 分配是正偏。", "fig": "figures/ch4_q9.png", "card_img": "figures/cards/card_calc_ch4_q9.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q13", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 13", "title": "會計系起薪點圖與皮爾森偏態係數", "question": "5 位剛畢業的會計系學生起薪（千美元）如下：36, 26, 33, 28, 31。\na. 計算平均數、中位數與標準差。\nb. 計算皮爾森偏態係數。\nc. 計算動差法軟體偏態係數。", "answer": "a. 平均數是 154/5 = 30.8，中位數是 31.0，標準差是 3.96，由 s = √(62.8/4) = 3.96；\nb. -0.15，由 3(30.8 - 31.0)/3.96 得出；\nc. 0.125，由 [5/(4 × 3)] × 0.301 得出。", "fig": "figures/ch4_q13.png", "card_img": "figures/cards/card_calc_ch4_q13.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q19", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 19", "title": "用餐時段與點甜點關聯列聯表分析", "question": "某餐廳記錄 200 位顧客的用餐時段（午餐或晚餐）以及是否點甜點。\na. 兩個變數的測量尺度為何？\nb. 這是哪一種表格？\nc. 超過一半的顧客點甜點嗎？\nd. 超過一半的午餐顧客點甜點嗎？\ne. 超過一半的晚餐顧客點甜點嗎？", "answer": "a. 兩個變數皆為名目尺度；  b. 列聯表；  c. 是的，因為有 58.5% 或超過一半的顧客點甜點；  d. 不是，因為只有 32% 的午餐顧客點甜點；  e. 是的，因為有 85% 的晚餐顧客點甜點。", "fig": "figures/ch4_q19.png", "card_img": "figures/cards/card_calc_ch4_q19.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q23", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 23", "title": "房貸再融資資料之百分位數與箱形圖繪製", "question": "20 位屋主房貸再融資金額（千美元）資料。\na. 計算中位數、第一四分位數 (Q1) 與第三四分位數 (Q3)。\nb. 計算第 26 百分位數 (P26) 與第 83 百分位數 (P83)。\nc. 繪製箱形圖。", "answer": "a. L50 = (20+1)(50/100) = 10.50，中位數 = (83.7 + 85.6)/2 = 84.65；L25 = 5.25，Q1 = 66.6 + 0.25(72.9 - 66.6) = 68.175；L75 = 15.75，Q3 = 87.1 + 0.75(90.2 - 87.1) = 89.425；\nb. L26 = 5.46，P26 = 66.6 + 0.46(72.9 - 66.6) = 69.498；L83 = 17.43，P83 = 93.3 + 0.43(98.6 - 93.3) = 95.579；\nc. 箱形圖如圖所示。", "fig": "figures/ch4_q23.png", "card_img": "figures/cards/card_calc_ch4_q23.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q25", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 25", "title": "大眾運輸 vs 自行開車雙並列箱形圖比較", "question": "比較大眾運輸與自行開車通勤時間之雙並列箱形圖。\na. 寫出大眾運輸之五數摘要與四分位數。\nb. 寫出自行開車之五數摘要與四分位數。\nc. 比較兩組通勤時間之差異。", "answer": "a. Q1 = 26.25，Q3 = 35.75，中位數 = 31.50；\nb. Q1 = 33.25，Q3 = 38.75，中位數 = 37.50；\nc. 搭乘大眾運輸的員工所花時間的中位數少大約 6 分鐘。搭乘大眾運輸的員工所花時間的變異程度較大。搭乘大眾運輸的員工所花時間的 Q1 與 Q3 之差距是 9.5 分鐘。自行開車的員工所花時間的 Q1 與 Q3 之差距是 5.5 分鐘。", "fig": "figures/ch4_q25.png", "card_img": "figures/cards/card_calc_ch4_q25.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q31", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 31", "title": "城市汽車失竊數分布與偏態判定", "question": "7 大城市汽車失竊數資料，計算皮爾森偏態係數與軟體偏態係數並進行比較。", "answer": "sk = 0.065 或 sk = 3(7.7143 - 8.0)/3.9036 = -0.22。", "fig": "figures/ch4_q31.png", "card_img": "figures/cards/card_calc_ch4_q31.png", "lines": [], "badge": ""}, {"id": "calc_ch4_q35", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 35", "title": "美國勞動力性別失業率對比長條圖", "question": "美國 20 歲以上性別與就業狀況列聯表。\na. 總勞動力人口是多少？\nb. 失業員工百分比是多少？\nc. 計算男性與女性失業百分比。", "answer": "a. 139,340,000；  b. 失業員工百分比 = 5.4%，由 (7,523/139,340) × 100% 得出；  c. 男性失業百分比 = 5.64%，女性失業百分比 = 5.12%。", "fig": "figures/ch4_q35.png", "card_img": "figures/cards/card_calc_ch4_q35.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q29", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 29", "title": "機率一般加法規則與文氏圖應用", "question": "水族箱中有 140 隻劍尾魚，依體色與性別分類。讓 A 代表魚是綠色的機率，B 代表魚是雄性的機率。\na. 求 P(A)。\nb. 求 P(B)。\nc. 求 P(A 且 B)。\nd. 求 P(A 或 B)。", "answer": "讓 A 代表魚是綠色的機率，B 代表魚是雄性的機率。\na. P(A) = 80/140 = 0.5714；\nb. P(B) = 60/140 = 0.4286；\nc. P(A 且 B) = 36/140 = 0.2571；\nd. P(A 或 B) = P(A) + P(B) - P(A 且 B) = 80/140 + 60/140 - 36/140 = 104/140 = 0.7429。", "fig": "figures/ch5_q29.png", "card_img": "figures/cards/card_calc_ch5_q29.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q35", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 35", "title": "雙向列聯表之邊際機率、條件機率與聯合機率", "question": "考慮雙向列聯表事件。\na. 求 P(A1)。\nb. 求 P(B1 | A2)。\nc. 求 P(B2 且 A3)。", "answer": "a. P(A1) = 3/10 = 0.30；  b. P(B1 | A2) = 1/3 = 0.33；  c. P(B2 且 A3) = 1/10 = 0.10。", "fig": "figures/ch5_q35.png", "card_img": "figures/cards/card_calc_ch5_q35.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q41", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 41", "title": "貝氏定理（Bayes' Theorem）雙分割事後機率推導", "question": "已知 P(A1) = 0.60, P(A2) = 0.40, P(B1 | A1) = 0.05, P(B1 | A2) = 0.10。\n利用貝氏定理求事後機率 P(A1 | B1)。", "answer": "P(A1 | B1) = [P(A1)P(B1|A1)] / [P(A1)P(B1|A1) + P(A2)P(B1|A2)] = (0.60 × 0.05) / [(0.60 × 0.05) + (0.40 × 0.10)] = 0.030 / 0.070 = 0.4286。", "fig": "figures/ch5_q41.png", "card_img": "figures/cards/card_calc_ch5_q41.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q43", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 43", "title": "棒球隊日夜賽贏球貝氏事後修正", "question": "小聯盟球隊有 70% 的比賽在夜間進行，30% 在白天進行。夜間贏球機率為 50%，白天贏球機率為 90%。已知該隊贏得一場比賽，求該場比賽是在夜間進行的事後機率 P(夜間 | 贏)。", "answer": "P(夜間 | 贏) = P(夜間)P(贏|夜間) / [P(夜間)P(贏|夜間) + P(白天)P(贏|白天)] = (0.70)(0.50) / [(0.70)(0.50) + (0.30)(0.90)] = 0.35 / 0.62 = 0.5645。", "fig": "figures/ch5_q43.png", "card_img": "figures/cards/card_calc_ch5_q43.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q45", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 45", "title": "百貨公司消費金額超額付款方式貝氏分析", "question": "百貨公司客戶使用現金、信用卡、簽帳卡的比例分別為 30%、30%、40%。各支付方式消費金額超過 $50 的機率分別為 20%、90%、60%。若某筆消費超過 $50，求其使用現金支付的事後機率 P(現金 | >$50)。", "answer": "P(現金 | > $50) = P(現金)P(>$50|現金) / [P(現金)P(>$50|現金) + P(信用卡)P(>$50|信用卡) + P(簽帳卡)P(>$50|簽帳卡)] = (0.30)(0.20) / [(0.30)(0.20) + (0.30)(0.90) + (0.40)(0.60)] = 0.060 / 0.570 = 0.1053。", "fig": "figures/ch5_q45.png", "card_img": "figures/cards/card_calc_ch5_q45.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q59", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 59", "title": "籃球半決賽獨立事件乘法規則", "question": "女子大學籃球賽半決賽，甲隊獲勝賠率換算機率為 2/3，乙隊獲勝機率為 3/4。假設兩場比賽互相獨立。\na. 兩隊皆晉級決賽的機率為何？\nb. 兩隊皆未晉級的機率為何？\nc. 至少有一隊晉級決賽的機率為何？", "answer": "a. 1/2，由 (2/3)(3/4) 得到；  b. 1/12，由 (1/3)(1/4) 得到；  c. 11/12，由 1 − 1/12 得到。", "fig": "figures/ch5_q59.png", "card_img": "figures/cards/card_calc_ch5_q59.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q61", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 61", "title": "男性存活獨立事件與對立事件互補", "question": "根據生命表，60 歲男性隔年仍存活的機率為 0.98。選取 5 位 60 歲男性。\na. 5 位隔年全部存活的機率是多少？\nb. 至少有一位在隔年過世的機率是多少？", "answer": "a. 0.9039，由 (0.98)^5 得到；  b. 0.0961，由 1 − 0.9039 得到。", "fig": "figures/ch5_q61.png", "card_img": "figures/cards/card_calc_ch5_q61.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q67", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 67", "title": "廣告記憶與讀報關聯條件機率", "question": "某地區 60% 居民訂閱報紙 (S)。在訂戶中，85% 能記住特定廣告 (R)。\na. 既是訂戶又能記住廣告的機率為何？\nb. 是訂戶但記不住該廣告的機率為何？", "answer": "a. P(S) × P(R | S) = 0.60 × 0.85 = 0.51；  b. P(S) × P(~R | S) = 0.60 × (1 − 0.85) = 0.09。", "fig": "figures/ch5_q67.png", "card_img": "figures/cards/card_calc_ch5_q67.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q69", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 69", "title": "微型記憶卡瑕疵抽驗互補原則", "question": "檢驗 1,000 張微型 SD 卡，其中 112 張有小瑕疵，31 張不能用，其餘為良品。\na. 隨機選取一張，不是良品的機率是多少？\nb. 若已知不是良品，它屬於不能用的條件機率是多少？", "answer": "a. P(不是良品) = P(小瑕疵) + P(不能用) = 112/1,000 + 31/1,000 = 0.143；  b. P(不能用 | 不是良品) = 0.031 / 0.143 = 0.217。", "fig": "figures/ch5_q69.png", "card_img": "figures/cards/card_calc_ch5_q69.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q71", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 71", "title": "服飾店發展前景與獲利貝氏決策樹", "question": "女性服飾店評估連鎖分店，優等、中等、劣等地點機率為 10%、60%、30%。各類地點第一年獲利的條件機率分別為 20%、80%、60%。若分店第一年獲利，求該地點為劣等地點的事後機率 P(劣等 | 有利潤)。", "answer": "P(劣等 | 有利潤) = 0.10(0.20) / [0.10(0.20) + 0.60(0.80) + 0.30(0.60)] = 0.020 / 0.680 = 0.0294。", "fig": "figures/ch5_q71.png", "card_img": "figures/cards/card_calc_ch5_q71.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q73", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 73", "title": "刮刮樂連續未中獎之對立事件分析", "question": "披薩店刮刮樂活動，刮中免費披薩機率為 0.10，刮中免費可樂機率為 0.02。\na. 顧客光顧一次獲得免費披薩或可樂的機率為何？\nb. 光顧一次完全未中獎的機率為何？\nc. 連續光顧 3 次皆未中獎的機率為何？\nd. 連續光顧 3 次中至少中獎一次的機率為何？", "answer": "a. 0.1 + 0.02 = 0.12；  b. 1 − 0.12 = 0.88；  c. (0.88)^3 = 0.6815；  d. 1 − 0.6815 = 0.3185。", "fig": "figures/ch5_q73.png", "card_img": "figures/cards/card_calc_ch5_q73.png", "lines": [], "badge": ""}, {"id": "calc_ch5_q87", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 87", "title": "四家映像管供應商瑕疵品貝氏歸屬", "question": "四家供應商（Tyson, Fuji, Kirkpatricks, Parts）供應比例分別為 20%、30%、25%、25%，其產品瑕疵率分別為 3%、4%、7%、6.5%。\na. 隨機抽取一件零件，為瑕疵品的機率 P(D) 為何？\nb. 若抽得瑕疵品，其來自 Tyson 供應商的事後機率為何？", "answer": "a. P(D) = 0.20(0.03) + 0.30(0.04) + 0.25(0.07) + 0.25(0.065) = 0.05175；\nb. P(Tyson | 有瑕疵) = 0.20(0.03) / 0.05175 = 0.1159（修正表：Tyson 0.1159, Fuji 0.2319, Kirkpatricks 0.3382, Parts 0.3140）。", "fig": "figures/ch5_q87.png", "card_img": "figures/cards/card_calc_ch5_q87.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q23", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 23", "title": "二項分配 B(15, 0.70) 成功維修案件機率", "question": "維修工程師修復成功率為 0.70，隨機抽取 15 件維修個案。\na. 計算成功維修案件的平均數與標準差。\nb. 剛好成功修復 10 件的機率是多少？\nc. 剛好成功修復 10 或 11 件的機率是多少？\nd. 成功修復超過 10 件的機率是多少？", "answer": "a. μ = 10.5，由 15 × 0.7 得到。σ = √(15(0.7)(0.3)) = 1.7748；\nb. 0.2061，由 (15! / (10!5!)) (0.7)^10 (0.3)^5 得到；\nc. 0.4247，由 0.2061 + 0.2186 得到；\nd. 0.5154，由 0.2186 + 0.1700 + 0.0916 + 0.0305 + 0.0047 得到。", "fig": "figures/ch6_q23.png", "card_img": "figures/cards/card_calc_ch6_q23.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q27", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 27", "title": "超幾何機率分配：房地產價外貸款抽樣", "question": "母體共有 10 筆貸款，其中 3 筆為價外貸款。銀行審計人員隨機抽取 2 筆貸款。\n求抽取的 2 筆中沒有價外貸款 (x = 0) 的機率。", "answer": "N 是 10，即母體中的貸款數量；S 是 3，即母體中的價外貸款數量；x 是 0，即樣本中的價外貸款數量；n 是 2，即樣本大小。使用公式 (6-6) 求出 P(0) = (7C2)(3C0)/10C2 = 21(1)/45 = 0.4667。", "fig": "figures/ch6_q27.png", "card_img": "figures/cards/card_calc_ch6_q27.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q29", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 29", "title": "超幾何機率分配：送貨車煞車問題抽樣", "question": "15 輛送貨車中有 6 輛煞車有問題。隨機抽驗 5 輛車，求其中剛好有 2 輛煞車有問題的機率。", "answer": "P(2) = (9C3)(6C2) / 15C5 = 84(15) / 3,003 = 0.4196。", "fig": "figures/ch6_q29.png", "card_img": "figures/cards/card_calc_ch6_q29.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q35", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 35", "title": "卜瓦松分配近似二項客服占線機率", "question": "航空公司接到 1,200 通電話，每通電話被轉到客服人員的機率為 0.005。利用卜瓦松分配求至少有 5 通電話被轉接的機率。", "answer": "π (或 μ) = 6，P(x ≥ 5) = 1 − (0.0025 + 0.0149 + 0.0446 + 0.0892 + 0.1339) = 0.7149。", "fig": "figures/ch6_q35.png", "card_img": "figures/cards/card_calc_ch6_q35.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q43", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 43", "title": "二項分配 B(10, 0.35) 冰淇淋偏好調查", "question": "35% 的成年人偏好香草冰淇淋。隨機調查 10 位成年人。\na. 偏好香草冰淇淋的期望人數是多少？\nb. 剛好有 4 人偏好的機率是多少？\nc. 至少有 4 人偏好的機率是多少？", "answer": "a. μ = 10(0.35) = 3.5；\nb. P(x = 4) = 10C4 (0.35)^4 (0.65)^6 = 210(0.0150)(0.0754) = 0.2375；\nc. P(x ≥ 4) = 10Cx (0.35)^x (0.65)^(10-x) = 0.2375 + 0.1536 + … + 0.0000 = 0.4862。", "fig": "figures/ch6_q43.png", "card_img": "figures/cards/card_calc_ch6_q43.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q47", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 47", "title": "二項分配 B(20, 0.075) 職場嗑藥調查", "question": "某公司員工藥物檢驗呈陽性比例為 0.075。隨機抽驗 20 位員工。\na. 呈陽性人數的平均數與標準差為何？\nb. 沒有員工呈陽性的機率為何？\nc. 至少有一位員工呈陽性的機率為何？", "answer": "a. μ = 20(0.075) = 1.5，σ = √(20(0.075)(0.925)) = 1.1779；\nb. 0.2103，由 (20! / (0!20!)) (0.075)^0 (0.925)^20 得到；\nc. 0.7897，由 1 − 0.2103 得到。", "fig": "figures/ch6_q47.png", "card_img": "figures/cards/card_calc_ch6_q47.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q55", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 55", "title": "超幾何分配：律師事務所委員會成員", "question": "法律事務所 10 位合夥人中，有 7 位來自俄亥俄州，3 位來自肯塔基州。隨機選出 3 位組成委員會。\na. 剛好有 1 位來自肯塔基州的機率？\nb. 至少有 1 位來自肯塔基州的機率？", "answer": "a. P(1) = (7C2)(3C1)/10C3 = (21)(3)/120 = 0.5250；\nb. P(0) = (7C3)(3C0)/10C3 = (35)(1)/120 = 0.2917，P(x ≥ 1) = 1 − P(0) = 1 − 0.2917 = 0.7083。", "fig": "figures/ch6_q55.png", "card_img": "figures/cards/card_calc_ch6_q55.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q57", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 57", "title": "超幾何分配：警察局長面談代表性檢驗", "question": "警察局長候選人名單有 12 人，其中 4 人為少數族裔。市長隨機選出 4 人進行面談。\n求面談名單中沒有少數族裔 (x = 0) 的機率。", "answer": "P(x = 0) = (8C4)(4C0)/12C4 = 70/495 = 0.141。", "fig": "figures/ch6_q57.png", "card_img": "figures/cards/card_calc_ch6_q57.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q63", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 63", "title": "卜瓦松分配：每分鐘車輛失竊機率 (μ = 3.1)", "question": "美國每分鐘有 3.1 輛車失竊，失竊數符合卜瓦松分配 (μ = 3.1)。\na. 1 分鐘內剛好有 4 輛車失竊的機率是多少？\nb. 1 分鐘內沒有車子失竊的機率是多少？\nc. 1 分鐘內至少有一輛車失竊的機率是多少？", "answer": "a. 0.1733，由 (3.1)^4 e^(-3.1) / 4! 得出；\nb. 0.0450，由 (3.1)^0 e^(-3.1) / 0! 得出；\nc. 0.9550，由 1 − 0.0450 得出。", "fig": "figures/ch6_q63.png", "card_img": "figures/cards/card_calc_ch6_q63.png", "lines": [], "badge": ""}, {"id": "calc_ch6_q65", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 65", "title": "卜瓦松分配：SpaceX 載人火箭發射風險", "question": "載人太空發射失敗機率為 1/276。預計發射 20 次。\n求預期失敗次數、零失敗機率、失敗 1 次機率，以及失敗超過 0 次的機率。", "answer": "μ = nπ = 20(1/276) = 0.0725；P(0) = (0.0725)^0 e^(-0.0725)/0! = 0.930；P(1) = (0.0725)^1 e^(-0.0725)/1! = 0.067；P(x > 0) = 1 − P(x = 0) = 1 − 0.930 = 0.070。", "fig": "figures/ch6_q65.png", "card_img": "figures/cards/card_calc_ch6_q65.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q1", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 1", "title": "均勻機率分配 U(6, 10) 參數與區間機率", "question": "連續隨機變數 X 依循 6 到 10 的均勻機率分配。\na. a 與 b 的值是多少？\nb. 計算平均數。\nc. 計算標準差。\nd. 顯示曲線下的總面積為 1。\ne. 計算 P(x > 7)。\nf. 計算 P(7 ≤ x ≤ 9)。\ng. 計算 P(x = 7.91)。", "answer": "a. b = 10，a = 6；\nb. μ = (6 + 10)/2 = 8；\nc. σ = √((10 - 6)^2 / 12) = 1.1547；\nd. 面積 = (1/(10 - 6)) · (10 - 6) = 1；\ne. P(x > 7) = (1/(10 - 6)) · (10 - 7) = 3/4 = 0.75；\nf. P(7 ≤ x ≤ 9) = (1/(10 - 6)) · (9 - 7) = 2/4 = 0.50；\ng. P(x = 7.91) = 0（對連續機率分配而言，某一點數值的面積為 0）。", "fig": "figures/ch7_q1.png", "card_img": "figures/cards/card_calc_ch7_q1.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q5", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 5", "title": "均勻機率分配應用：Flagstaff 降雨量機率", "question": "亞利桑那州 Flagstaff 七月份降雨量依循 0.5 到 3.00 英寸的均勻分配。\na. a 與 b 的值是多少？\nb. 計算平均數與標準差。\nc. 降雨量小於 1 英寸的機率是多少？\nd. 降雨量剛好為 1.00 英寸的機率是多少？\ne. 降雨量超過 1.5 英寸的機率是多少？", "answer": "a. a = 0.5，b = 3.00；\nb. μ = (0.5 + 3.00)/2 = 1.75，σ = √((3.00 - 0.50)^2 / 12) = 0.72；\nc. P(x < 1) = (1/(3.0 - 0.5)) · (1 - 0.5) = 0.5/2.5 = 0.2；\nd. 0，由 (1/(3.0 - 0.5)) · (1.0 - 1.0) 得到；\ne. P(x > 1.5) = (1/(3.0 - 0.5)) · (3.0 - 1.5) = 1.5/2.5 = 0.6。", "fig": "figures/ch7_q5.png", "card_img": "figures/cards/card_calc_ch7_q5.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q7", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 7", "title": "常態分配 N(20, 4) 標準化 z 值轉換與查表", "question": "常態分配隨機變數 X，平均數 μ = 20，標準差 σ = 4.0。\na. 數值 25 的 z 值是多少？\nb. X 落在 20 到 25 之間的機率是多少？\nc. X 小於 18 的機率是多少？", "answer": "a. 1.25，由 z = (25 - 20)/4.0 = 1.25 得到；\nb. 0.3944，查閱書末附表 3 得出；\nc. 0.3085，由 z = (18 - 20)/4.0 = -0.5 得到。在書末附表 3 中找到對應 z = -0.5 的面積是 0.1915。接著，0.5000 − 0.1915 = 0.3085。", "fig": "figures/ch7_q7.png", "card_img": "figures/cards/card_calc_ch7_q7.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q9", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 9", "title": "空服員時薪常態分配 N(29.81, 9.31) 區間機率", "question": "空服員時薪依循常態分配，平均數 μ = $29.81，標準差 σ = $9.31。\na. 時薪落在 $29.81 到 $35.00 之間的機率是多少？\nb. 時薪超過 $35.00 的機率是多少？\nc. 時薪少於 $20.00 的機率是多少？", "answer": "a. 0.2123，由 z = (35.00 - 29.81)/9.31 = 0.56 得到，然後在書末附表 3 中找到 z = 0.56 相應的面積是 0.2123；\nb. 0.2877，由 0.5000 − 0.2123 得到；\nc. 0.1469，由 z = (20.00 - 29.81)/9.31 = -1.05 得到。在書末附表 3 中找到 z = -1.05 相應的面積是 0.3531。接著，0.5000 − 0.3531 = 0.1469。", "fig": "figures/ch7_q9.png", "card_img": "figures/cards/card_calc_ch7_q9.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q11", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 11", "title": "常態分配 N(50, 4) 雙側跨度與同側機率判定", "question": "常態分配隨機變數，平均數 μ = 50，標準差 σ = 4.0。\na. 計算 P(44 ≤ x ≤ 55)。\nb. 計算 P(x > 55)。\nc. 計算 P(52 ≤ x ≤ 55)。", "answer": "a. 0.8276：先求出 z = -1.5，由 (44 - 50)/4 得出，以及 z = 1.25 = (55 - 50)/4。根據書末附表 3，介於 -1.5 到 0 之間的面積是 0.4332，而在 0 與 1.25 之間的面積是 0.3944。之後將這兩個面積相加，我們得到 0.4332 + 0.3944 = 0.8276；\nb. 0.1056，由 0.5000 − 0.3944 得到，其中 z = 1.25；\nc. 0.2029：回想對應 z = 1.25 的面積是 0.3944，以及對應 z = 0.5 的面積是 0.1915，由 (52 - 50)/4 得到。之後相減 0.3944 − 0.1915，就會得到 0.2029。", "fig": "figures/ch7_q11.png", "card_img": "figures/cards/card_calc_ch7_q11.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q13", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 13", "title": "2022 年退稅金額常態分配 N(3401, 82.5)", "question": "2022 年納稅人退稅金額依循常態分配，平均數為 $3,401，標準差為 $82.5。\na. 退稅金額超過 $3,500 的百分比是多少？\nb. 退稅金額介於 $3,500 與 $3,579 之間的百分比是多少？\nc. 退稅金額介於 $3,325 與 $3,579 之間的百分比是多少？", "answer": "a. 0.1151：首先使用公式 (7-5) 求出 $3,500 的 z 值，是 (3,500 - 3,401)/82.5，或 1.20。然後查閱書末附表 3 來找出 0 與 1.20 之間的面積，為 0.3849。最後，因為關注的面積是在 1.20 以上，所以將 0.5000 減去該機率。結果是 0.5000 – 0.3849，或 0.1151；\nb. 0.0997：使用公式 (7-5) 求出 $3,579 的 z 值，是 (3,579 - 3,401)/82.5，或 2.16。然後查閱書末附表 3 來找出標準常態曲線下的面積，該機率是 0.4846。因為這兩點（1.20 與 2.16）在平均數的同一邊，就將較大的機率減去較小的機率。結果是 0.4846 − 0.3849 = 0.0997；\nc. 0.8058：使用公式 (7-5) 算出 $3,325 的 z 值，是 -0.92，由 (3,325 - 3,401)/82.5 得到。相應的面積是 0.3212。因為 -0.92 與 2.16 在平均數的兩邊，就將相應的機率相加。因此，我們得到 0.3212 + 0.4846 = 0.8058。", "fig": "figures/ch7_q13.png", "card_img": "figures/cards/card_calc_ch7_q13.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q15", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 15", "title": "電台廣播收聽時間常態分配 N(15, 3.5)", "question": "上班族開車收聽電台新聞的平均時間為 15 分鐘，標準差為 3.5 分鐘。\na. 開車收聽時間超過 20 分鐘的機率為何？\nb. 開車收聽時間不超過 20 分鐘的機率為何？\nc. 開車收聽時間在 10 到 12 分鐘之間的機率為何？", "answer": "a. 0.0764，由以下過程得出：z = (20 - 15)/3.5 = 1.43，之後，0.5000 − 0.4236 = 0.0764；\nb. 0.9236，由 0.5000 + 0.4236 得到，其中 z = 1.43；\nc. 0.1185，由 z = (12 - 15)/3.5 = -0.86 得到。曲線下的面積是 0.3051，之後 z = (10 - 15)/3.5 = -1.43。面積是 0.4236。最後，0.4236 − 0.3051 = 0.1185。", "fig": "figures/ch7_q15.png", "card_img": "figures/cards/card_calc_ch7_q15.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q21", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 21", "title": "常態分配反查 z 值求極端 1% 百分位數門檻", "question": "個人電腦使用者聆聽串流音樂的時間依循常態分配。\na. 去年平均數為 195 小時，標準差為 8.5 小時。聆聽時間最高 1% 的使用者至少聽了多少小時？\nb. 4 年前平均數為 290 小時，標準差為 8.5 小時。聆聽時間最低 1% 的使用者至多聽了多少小時？", "answer": "a. 214.8 小時：找出介於 0 與 z 之間的面積是 0.4900 的 z 值。該 z 值是 2.33。然後解 x：2.33 = (x - 195)/8.5，所以 x = 214.8 小時；\nb. 270.2 小時：找出介於 0 與 (-z) 之間的面積是 0.4900 的 z 值。該 z 值是 -2.33。然後解 x：-2.33 = (x - 290)/8.5，所以 x = 270.2 小時。", "fig": "figures/ch7_q21.png", "card_img": "figures/cards/card_calc_ch7_q21.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q37", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 37", "title": "可樂罐裝容量均勻分配 U(11.96, 12.05)", "question": "某裝瓶廠可樂罐裝容量依循 11.96 到 12.05 盎司的均勻機率分配。\na. 計算平均容量。\nb. 計算標準差。\nc. 容量小於 12.00 盎司的機率是多少？\nd. 容量大於 11.98 盎司的機率是多少？\ne. 容量大於 11.00 盎司的機率是多少？", "answer": "a. μ = (11.96 + 12.05)/2 = 12.005；\nb. σ = √((12.05 - 11.96)^2 / 12) = 0.0260；\nc. P(x < 12) = (1/(12.05 - 11.96)) · ((12.00 - 11.96)/1) = 0.04/0.09 = 0.44；\nd. P(x > 11.98) = (1/(12.05 - 11.96)) · ((12.05 - 11.98)/1) = 0.07/0.09 = 0.78；\ne. 所有的可樂容量皆超過 11 盎司，所以機率是 100%。", "fig": "figures/ch7_q37.png", "card_img": "figures/cards/card_calc_ch7_q37.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q39", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 39", "title": "信用卡申請審核時間均勻分配 U(4, 10)", "question": "百貨公司信用卡審核時間依循 4 到 10 分鐘的均勻機率分配。\na. 計算平均審核時間。\nb. 計算審核時間的標準差。\nc. 審核時間小於 6 分鐘的機率是多少？\nd. 審核時間大於 5 分鐘的機率是多少？", "answer": "a. μ = (4 + 10)/2 = 7；\nb. σ = √((10 - 4)^2 / 12) = 1.732；\nc. P(x < 6) = (1/(10 - 4)) · ((6 - 4)/1) = 2/6 = 0.33；\nd. P(x > 5) = (1/(10 - 4)) · ((10 - 5)/1) = 5/6 = 0.83。", "fig": "figures/ch7_q39.png", "card_img": "figures/cards/card_calc_ch7_q39.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q31", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 31【指數分配參考題，已劃叉不考】", "title": "Subway 潛艇堡等候時間指數分配 (λ = 1/60)", "question": "Subway 顧客點餐等候時間依循指數機率分配，平均等候時間為 60 秒 (μ = 60)。\na. 等候時間不到 30 秒的機率？\nb. 等候時間超過 120 秒的機率？\nc. 等候時間在 45 到 75 秒之間的機率？\nd. 50% 顧客等候時間少於多少秒（中位數）？", "answer": "a. 0.3935，由 1 − e^[(-1/60)(30)] 得出；\nb. 0.1353，由 e^[(-1/60)(120)] 得出；\nc. 0.1859，由 e^[(-1/60)(45)] − e^[(-1/60)(75)] 得出；\nd. 41.59 秒，由 -60 ln(0.5) 得出。", "fig": "figures/ch7_q31.png", "card_img": "figures/cards/card_calc_ch7_q31.png", "lines": [], "badge": ""}, {"id": "calc_ch7_q57", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 57【指數分配參考題，已劃叉不考】", "title": "電腦開機時間指數分配 (λ = 1/27)", "question": "某新型電腦開機時間依循指數機率分配，平均開機時間為 27 秒 (μ = 27)。\na. 開機時間不超過 15 秒的機率？\nb. 開機時間超過 60 秒的機率？\nc. 開機時間在 30 到 45 秒之間的機率？\nd. 前 10% 最快完成開機的時間門檻為何？", "answer": "a. 0.4262，由 1 − e^[(-1/27)(15)] 得出；\nb. 0.1084，由 e^[(-1/27)(60)] 得出；\nc. 0.1403，由 e^[(-1/27)(30)] − e^[(-1/27)(45)] 得出；\nd. 2.84 秒，由 -27 ln(0.9) 得出。", "fig": "figures/ch7_q57.png", "card_img": "figures/cards/card_calc_ch7_q57.png", "lines": [], "badge": ""}];
-    let currentChapter = 0;
+    // 數據注入
+    const hwQuestionsData = [{"id": "calc_ch2_q1", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 1", "title": "圓形圖之相對頻率與角度轉換", "question": "圓形圖顯示可樂的相對市占率。百事可樂的區塊部分有 90 度角，市占率為何？", "answer": "百事可樂的市占率為 25%（由 90° / 360° = 1/4 = 25% 得到）。", "fig": "figures/ch2_q1.png", "card_img": "figures/cards/card_calc_ch2_q1.png"}, {"id": "calc_ch2_q9", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 9", "title": "次數分配之組數決定（2^k 法則）與組距計算", "question": "一份含有 230 筆觀測值，數值介於 $235 至 $567 之間的資料，你認為組距應設定為多少？", "answer": "2^7 = 128，2^8 = 256，因此建議分成 8 組。理論組距 i ≥ ($567 - $235) / 8 = 41.5（課本取整 41）。組距使用 45 或 50。", "fig": "figures/ch2_q9.png", "card_img": "figures/cards/card_calc_ch2_q9.png"}, {"id": "calc_ch2_q11", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 11", "title": "工廠生產量之次數分配表建置與圖形分配詮釋", "question": "FILE 過去 16 天，Wachesaw 工廠生產數量如下表所示：\n27, 27, 27, 28, 27, 25, 25, 28, 26, 28, 26, 28, 31, 30, 26, 26\n將這些資料整理成次數分配：\na. 你認為應分成幾組？\nb. 你認為組距應設定為多少？\nc. 你認為第一組的組下限應為多少？\nd. 將這些資料整理成次數分配，並計算相對次數分配。\ne. 解釋資料分配的形狀。", "answer": "a. 2^4 = 16，因此建議分成 5 組；\nb. i ≥ (31 - 25)/5 = 1.2，組距使用 1.5；\nc. 第一組下限設為 24.0；\nd. 次數表：24.0~25.5 (2, 0.125)、25.5~27.0 (4, 0.250)、27.0~28.5 (8, 0.500)、28.5~30.0 (0, 0.000)、30.0~31.5 (2, 0.125)，總計 16 (1.000)；\ne. 生產量介於 24 和 31 之間，眾數組為 27 到 28.5（占 50%）。", "fig": "figures/ch2_q11.png", "card_img": "figures/cards/card_calc_ch2_q11.png"}, {"id": "calc_ch2_q15", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 15", "title": "直方圖之判讀與次數、相對次數分析", "question": "Sun Ray Candles 蠟燭店各在北卡羅萊納州與南卡羅萊納州的大西洋沿岸有幾個零售商店。該店許多客戶下單並詢問出貨情況。課本圖形為該店最近 100 天內每天出貨的數目。例如，第一組顯示當天出貨數為「0 以上至 5」時有 5 天。\na. 這是哪一種圖形？\nb. 總出貨數（總天數）是多少？\nc. 組距是多少？\nd. 在「10 以上至 15」這一組的出貨數是多少？\ne. 在「10 以上至 15」這一組的相對出貨數是多少？\nf. 在「10 以上至 15」這一組的組中點是多少？\ng. 有幾天的出貨數達 25 包以上？", "answer": "a. 直方圖；  b. 100 天；  c. 5；  d. 28 天；  e. 0.28；  f. 12.5；  g. 13 天。", "fig": "figures/ch2_q15.png", "card_img": "figures/cards/card_calc_ch2_q15.png"}, {"id": "calc_ch2_q17", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 17", "title": "次數多邊形圖之繪製原理與座標點計算", "question": "右列的次數分配顯示了 Brumley 統計顧問公司員工在最近一季搭機里程數的統計數據：\n（分組：0 以上至 3 千英里 5 人、3 以上至 6 千英里 12 人、6 以上至 9 千英里 23 人、9 以上至 12 千英里 8 人、12 以上至 15 千英里 2 人，總計 50 人）\na. 在資料中，有多少個員工？\nb. 第一組的組中點是多少？\nc. 以這些資料製作直方圖。\nd. 所繪製的次數多邊形圖中，第一組的點座標是多少？\ne. 以這些資料製作次數多邊形圖。\nf. 使用直方圖與次數多邊形圖說明員工搭機的累積里程數。", "answer": "a. 50；  b. 1,500 英里；  c. 直方圖如圖；  d. X = 1.5，Y = 5；  e. 次數多邊形圖如圖；  f. 50 名員工中，大約有一半出差的里程數在 6,000 至 9,000 英里間。有 5 名員工出差的里程數在 3,000 英里以下，以及 2 名員工超過 12,000 英里。", "fig": "figures/ch2_q17.png", "card_img": "figures/cards/card_calc_ch2_q17.png"}, {"id": "calc_ch2_q19", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 19", "title": "累加次數多邊形圖（肩峰圖 Ogive）之百分位數判讀", "question": "課本圖形為 40 名焊接工時薪之累加次數多邊形圖（肩峰圖）。\na. 調查了多少名焊接工？\nb. 組距是多少？\nc. 有多少名工人的時薪少於 $15？\nd. 75% 的工人之時薪少於多少？\ne. 50% 的工人之時薪少於多少？\nf. 大約有多少百分比的工人工資少於 $20？", "answer": "a. 40；  b. 5；  c. 11 或 12；  d. 約 $18 ╱小時；  e. 約 $9 ╱小時；  f. 約 75%。", "fig": "figures/ch2_q19.png", "card_img": "figures/cards/card_calc_ch2_q19.png"}, {"id": "calc_ch2_q21", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 21", "title": "次數分配轉換為累加次數分配與肩峰圖繪製", "question": "右列的次數分配是 Brumley 統計顧問公司員工搭乘飛機的累積飛行里程數之統計數字（請參考習題 17）：\na. 有多少員工搭乘的里程數小於 3,000 英里？\nb. 將次數分配轉換成累加次數分配。\nc. 將累加次數分配繪製成累加次數多邊形圖。\nd. 根據累加次數多邊形圖，約有 75% 的員工飛行里程數小於等於多少？", "answer": "a. 5 人；\nb. 累加次數表：小於 3: 5, 小於 6: 17, 小於 9: 40, 小於 12: 48, 小於 15: 50；\nc. 肩峰圖如圖；\nd. 約 8,700 英里。", "fig": "figures/ch2_q21.png", "card_img": "figures/cards/card_calc_ch2_q21.png"}, {"id": "calc_ch2_q23", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 23", "title": "質變數與量變數之比較與測量尺度歸納", "question": "質變數與量變數有何不同？請以測量尺度加以說明。\na. 質變數與量變數的測量尺度有何差異？\nb. 兩種變數皆可用於樣本或母體嗎？", "answer": "a. 質變數使用名目或順序的測量尺度，通常為計數的結果。量變數為離散型或連續型，其結果有自然的順序，可使用區間或比例的測量尺度；\nb. 兩種變數皆可用於樣本或母體。", "fig": "figures/ch2_q23.png", "card_img": "figures/cards/card_calc_ch2_q23.png"}, {"id": "calc_ch2_q25", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 25", "title": "次數表與長條圖、圓形圖之商務決策呈現", "question": "Myrtle Beach 度假村調查顧客最喜歡的休閒活動，結果包含沒有計畫、健行、泛舟與泡溫泉等。\na. 這是哪一種表格？\nb. 繪製長條圖。\nc. 繪製圓形圖。\nd. 哪一種圖形較好？為什麼？", "answer": "a. 次數表；  b. 長條圖如圖；  c. 圓形圖如圖；  d. 圓形圖較好，因為比較容易看出接近一半的旅客喜歡沒有計畫的休閒活動。", "fig": "figures/ch2_q25.png", "card_img": "figures/cards/card_calc_ch2_q25.png"}, {"id": "calc_ch2_q27", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 27", "title": "次數分配分組組數之判定（2^k 法則）", "question": "一組包含 83 筆觀測值的資料，建議分成幾組？", "answer": "2^6 = 64，2^7 = 128，建議分成 7 組。", "fig": "figures/ch2_q27.png", "card_img": "figures/cards/card_calc_ch2_q27.png"}, {"id": "calc_ch2_q29", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 29", "title": "員工通勤時間之次數分配表編製與分配特徵分析", "question": "25 位員工通勤時間（分鐘）資料如下：\n15, 23, 27, 31, 16, 24, 28, 33, 18, 25, 29, 35, 20, 26, 30, 38, 21, 26, 30, 42, 22, 27, 31, 48, 22\na. 建議分成幾組？\nb. 組距設定為多少？\nc. 第一組組下限為何？\nd. 整理成次數分配。\ne. 解釋次數分配的特徵。", "answer": "a. 5，因為 2^4 = 16 < 25 且 2^5 = 32 > 25；\nb. i ≥ (48 - 16)/5 = 6.4，組距使用 7；\nc. 15；\nd. 次數分配：15~22 (3), 22~29 (8), 29~36 (7), 36~43 (5), 43~50 (2)，總計 25；\ne. 通勤時間在 15 到 50 分鐘之間，最常見為 22 到 36 分鐘，超過 43 分鐘非常罕見。", "fig": "figures/ch2_q29.png", "card_img": "figures/cards/card_calc_ch2_q29.png"}, {"id": "calc_ch2_q31", "chapter": 2, "chapter_name": "次數表、次數分配與圖形的呈現", "q_num": "第 2 章 習題 31", "title": "大學生觀影次數分配建構與鐘形對稱性檢驗", "question": "45 位大學生上個月觀看電影的次數資料。\na. 建議分成幾組？\nb. 組距設定為多少？\nc. 第一組組下限為何？\nd. 整理成次數分配。\ne. 描述分配的形狀。", "answer": "a. 2^5 = 32，2^6 = 64，把全部資料分成 6 組；\nb. i = (10 - 1)/6 = 1.5，選擇組距為 2；\nc. 0；\nd. 次數分配：0~2 (1), 2~4 (5), 4~6 (12), 6~8 (17), 8~10 (8), 10~12 (2)；\ne. 此分配相當對稱或呈現鐘形分配，眾數在 4 以上至 8 這兩組之間。", "fig": "figures/ch2_q31.png", "card_img": "figures/cards/card_calc_ch2_q31.png"}, {"id": "calc_ch3_q43", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 43", "title": "母體平均數與母體變異數之計算", "question": "考慮以下 5 筆母體數值：8, 3, 7, 3, 4。\na. 計算母體平均數。\nb. 計算母體變異數。", "answer": "a. 5；  b. 4.4，由 ((8-5)^2 + (3-5)^2 + (7-5)^2 + (3-5)^2 + (4-5)^2)/5 得到（標準差為 2.0976）。", "fig": "figures/ch3_q43.png", "card_img": "figures/cards/card_calc_ch3_q43.png"}, {"id": "calc_ch3_q53", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 53", "title": "樣本平均數、樣本變異數與樣本標準差之計算", "question": "考慮以下 10 筆樣本數值：\n101, 95, 99, 93, 89, 97, 94, 98, 97, 88。\na. 計算樣本平均數。\nb. 計算樣本變異數與樣本標準差。", "answer": "a. x̄ = 951/10 = 95.1；  b. s^2 = 1,112.9/9 = 123.66，s = √123.66 = 11.12。", "fig": "figures/ch3_q53.png", "card_img": "figures/cards/card_calc_ch3_q53.png"}, {"id": "calc_ch3_q55", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 55", "title": "柴比雪夫定理（Chebyshev's Theorem）之資料比例推估", "question": "根據柴比雪夫定理，至少有多少百分比的資料會落在平均數加減 1.8 個標準差之內？", "answer": "約 69%，由 1 - 1/(1.8)^2 得到（精確值為 69.14%）。", "fig": "figures/ch3_q55.png", "card_img": "figures/cards/card_calc_ch3_q55.png"}, {"id": "calc_ch3_q57", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 57", "title": "常態鐘形分配之經驗法則（Empirical Rule）應用", "question": "某穀片包裝重量依循常態分配，平均數為 x̄，標準差為 s。\na. 大約有多少百分比的穀片盒重量會介於 x̄ - 2s 與 x̄ + 2s 之間？\nb. 大約有多少百分比的穀片盒重量會大於 x̄ + 2s？", "answer": "a. 約 95%；\nb. 鐘形分佈是對稱的。x̄ + 2s 是 95% 的一半，或是 47.5%。整條曲線是 100%；高於平均數的整個一半是 50%。所以，(50% - 47.5%) = 2.5% 的重量高於 x̄ + 2s。", "fig": "figures/ch3_q57.png", "card_img": "figures/cards/card_calc_ch3_q57.png"}, {"id": "calc_ch3_q59", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 59", "title": "母體平均數、中位數與離差總和恆為零之證明", "question": "某法律事務所 5 位資深合夥人去年承辦案件數為：6, 4, 3, 7, 5。\na. 計算平均數與中位數。\nb. 這是母體平均數還是樣本平均數？為什麼？\nc. 證明數值與平均數之離差總和恆為 0：Σ(x - μ) = 0。", "answer": "a. 平均數 = 5，由 (6 + 4 + 3 + 7 + 5)/5 得到。中位數 = 5，由排序完後的數值 (3,4,5,6,7) 中選取中間的數值而得出；\nb. 母體平均數，因為資料來自所有的資深合夥人；\nc. Σ(x - μ) = (6 - 5) + (4 - 5) + (3 - 5) + (7 - 5) + (5 - 5) = 0。", "fig": "figures/ch3_q59.png", "card_img": "figures/cards/card_calc_ch3_q59.png"}, {"id": "calc_ch3_q65", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 65", "title": "產品成本與長度之加權平均數（Weighted Mean）計算", "question": "某承包商購買三批圍籬，數量與每英尺價格分別為：270 英尺（每英尺 $5.00）、300 英尺（每英尺 $6.50）、100 英尺（每英尺 $8.00）。\n求每英尺圍籬的加權平均成本。", "answer": "x̄w = ($5.00(270) + $6.50(300) + $8.00(100)) / (270 + 300 + 100) = $4,100 / 670 = $6.12。", "fig": "figures/ch3_q65.png", "card_img": "figures/cards/card_calc_ch3_q65.png"}, {"id": "calc_ch3_q75", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 75", "title": "阿波羅太空計畫飛行時間之母體平均數、中位數、全距與標準差", "question": "NASA 阿波羅計畫全部 13 次載人飛行任務的飛行時間（小時）資料。\na. 這是母體還是樣本？為什麼？\nb. 計算平均數與中位數。\nc. 計算全距與標準差。", "answer": "a. 因為資料中有 13 次飛行時間，所以全部的任務都考慮，為母體；\nb. μ = 2,259/13 = 173.77，中位數 = 195；\nc. 全距 = 301 - 7 = 294，s = √(133,846/13) = 101.47。", "fig": "figures/ch3_q75.png", "card_img": "figures/cards/card_calc_ch3_q75.png"}, {"id": "calc_ch3_q77", "chapter": 3, "chapter_name": "數值的測量", "q_num": "第 3 章 習題 77", "title": "大學生開銷平均數、標準差與 95% 經驗法則", "question": "25 位大學生每學期教科書開銷資料。\na. 計算平均數、中位數與眾數。\nb. 計算全距與標準差。\nc. 根據經驗法則，大約 95% 的開銷落在哪個區間？\nd. 若資料分組為 30 筆，計算分組平均數與標準差。", "answer": "a. 平均數為 $717.20，由 $17,930/25 得到。中位數為 $717.00。有兩個眾數 $710 與 $722；\nb. 全距為 $90，由 $771 - $681 = $90 得到，標準差為 $24.87，由取 14,850/24 的平方根得到；\nc. $667.46 至 $766.94，由 $717.20 ± 2($24.87) 得出；\nd. x̄ = 270/30 = 9.0，s = √(366/(30-1)) = 3.552。分組資料的平均數和標準差是實際數值的平均數和標準差的估計值。", "fig": "figures/ch3_q77.png", "card_img": "figures/cards/card_calc_ch3_q77.png"}, {"id": "calc_ch4_q5", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 5", "title": "四分位數 (Quartiles) 定位計算", "question": "考慮以下 11 筆排序後的樣本資料：\n43, 47, 49, 51, 52, 53, 54, 55, 55, 56, 57。\n計算中位數、第一個四分位數 (Q1) 與第三個四分位數 (Q3)，並說明其意涵。", "answer": "中位數 = 53，由 (11 + 1)(1/2) 而得，所以是從最小的值算起，排序第六的數值。中位數表示 11 個觀測值中有 50% 小於 53；\nQ1 = 49，由 (11 + 1)(1/4) 而得，所以是從最小的值算起，排序第三的數值。第一個四分位數表示 11 個觀測值中有 25% 小於 49；\nQ3 = 55，由 (11 + 1)(3/4) 而得，所以是從最小的值算起，排序第九的數值。第三個四分位數表示 11 個觀測值中有 75% 小於 55。", "fig": "figures/ch4_q5.png", "card_img": "figures/cards/card_calc_ch4_q5.png"}, {"id": "calc_ch4_q9", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 9", "title": "箱形圖 (Box Plot) 與離群值檢驗", "question": "課本圖形為某大都會區住屋價格的箱形圖。\na. 房屋價格的中位數是多少？\nb. 第一個四分位數與第三個四分位數是多少？\nc. 四分位距是多少？\nd. 離群值的上限是多少？\ne. 資料中是否存在離群值？\nf. 解釋資料分配的形狀。", "answer": "a. 800；  b. Q1 = 500，Q3 = 1,200；  c. 700，由 1,200 − 500 得出；  d. 離群值的上限是 1,200 + 1.5(700) = 1,200 + 1,050 = 2,250；  e. 沒有離群值；  f. 分配是正偏。", "fig": "figures/ch4_q9.png", "card_img": "figures/cards/card_calc_ch4_q9.png"}, {"id": "calc_ch4_q13", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 13", "title": "會計系起薪點圖與皮爾森偏態係數", "question": "5 位剛畢業的會計系學生起薪（千美元）如下：36, 26, 33, 28, 31。\na. 計算平均數、中位數與標準差。\nb. 計算皮爾森偏態係數。\nc. 計算動差法軟體偏態係數。", "answer": "a. 平均數是 154/5 = 30.8，中位數是 31.0，標準差是 3.96，由 s = √(62.8/4) = 3.96；\nb. -0.15，由 3(30.8 - 31.0)/3.96 得出；\nc. 0.125，由 [5/(4 × 3)] × 0.301 得出。", "fig": "figures/ch4_q13.png", "card_img": "figures/cards/card_calc_ch4_q13.png"}, {"id": "calc_ch4_q19", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 19", "title": "用餐時段與點甜點關聯列聯表分析", "question": "某餐廳記錄 200 位顧客的用餐時段（午餐或晚餐）以及是否點甜點。\na. 兩個變數的測量尺度為何？\nb. 這是哪一種表格？\nc. 超過一半的顧客點甜點嗎？\nd. 超過一半的午餐顧客點甜點嗎？\ne. 超過一半的晚餐顧客點甜點嗎？", "answer": "a. 兩個變數皆為名目尺度；  b. 列聯表；  c. 是的，因為有 58.5% 或超過一半的顧客點甜點；  d. 不是，因為只有 32% 的午餐顧客點甜點；  e. 是的，因為有 85% 的晚餐顧客點甜點。", "fig": "figures/ch4_q19.png", "card_img": "figures/cards/card_calc_ch4_q19.png"}, {"id": "calc_ch4_q23", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 23", "title": "房貸再融資資料之百分位數與箱形圖繪製", "question": "20 位屋主房貸再融資金額（千美元）資料。\na. 計算中位數、第一四分位數 (Q1) 與第三四分位數 (Q3)。\nb. 計算第 26 百分位數 (P26) 與第 83 百分位數 (P83)。\nc. 繪製箱形圖。", "answer": "a. L50 = (20+1)(50/100) = 10.50，中位數 = (83.7 + 85.6)/2 = 84.65；L25 = 5.25，Q1 = 66.6 + 0.25(72.9 - 66.6) = 68.175；L75 = 15.75，Q3 = 87.1 + 0.75(90.2 - 87.1) = 89.425；\nb. L26 = 5.46，P26 = 66.6 + 0.46(72.9 - 66.6) = 69.498；L83 = 17.43，P83 = 93.3 + 0.43(98.6 - 93.3) = 95.579；\nc. 箱形圖如圖所示。", "fig": "figures/ch4_q23.png", "card_img": "figures/cards/card_calc_ch4_q23.png"}, {"id": "calc_ch4_q25", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 25", "title": "大眾運輸 vs 自行開車雙並列箱形圖比較", "question": "比較大眾運輸與自行開車通勤時間之雙並列箱形圖。\na. 寫出大眾運輸之五數摘要與四分位數。\nb. 寫出自行開車之五數摘要與四分位數。\nc. 比較兩組通勤時間之差異。", "answer": "a. Q1 = 26.25，Q3 = 35.75，中位數 = 31.50；\nb. Q1 = 33.25，Q3 = 38.75，中位數 = 37.50；\nc. 搭乘大眾運輸的員工所花時間的中位數少大約 6 分鐘。搭乘大眾運輸的員工所花時間的變異程度較大。搭乘大眾運輸的員工所花時間的 Q1 與 Q3 之差距是 9.5 分鐘。自行開車的員工所花時間的 Q1 與 Q3 之差距是 5.5 分鐘。", "fig": "figures/ch4_q25.png", "card_img": "figures/cards/card_calc_ch4_q25.png"}, {"id": "calc_ch4_q31", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 31", "title": "城市汽車失竊數分布與偏態判定", "question": "7 大城市汽車失竊數資料，計算皮爾森偏態係數與軟體偏態係數並進行比較。", "answer": "sk = 0.065 或 sk = 3(7.7143 - 8.0)/3.9036 = -0.22。", "fig": "figures/ch4_q31.png", "card_img": "figures/cards/card_calc_ch4_q31.png"}, {"id": "calc_ch4_q35", "chapter": 4, "chapter_name": "展現與探索資料", "q_num": "第 4 章 習題 35", "title": "美國勞動力性別失業率對比長條圖", "question": "美國 20 歲以上性別與就業狀況列聯表。\na. 總勞動力人口是多少？\nb. 失業員工百分比是多少？\nc. 計算男性與女性失業百分比。", "answer": "a. 139,340,000；  b. 失業員工百分比 = 5.4%，由 (7,523/139,340) × 100% 得出；  c. 男性失業百分比 = 5.64%，女性失業百分比 = 5.12%。", "fig": "figures/ch4_q35.png", "card_img": "figures/cards/card_calc_ch4_q35.png"}, {"id": "calc_ch5_q29", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 29", "title": "機率一般加法規則與文氏圖應用", "question": "水族箱中有 140 隻劍尾魚，依體色與性別分類。讓 A 代表魚是綠色的機率，B 代表魚是雄性的機率。\na. 求 P(A)。\nb. 求 P(B)。\nc. 求 P(A 且 B)。\nd. 求 P(A 或 B)。", "answer": "讓 A 代表魚是綠色的機率，B 代表魚是雄性的機率。\na. P(A) = 80/140 = 0.5714；\nb. P(B) = 60/140 = 0.4286；\nc. P(A 且 B) = 36/140 = 0.2571；\nd. P(A 或 B) = P(A) + P(B) - P(A 且 B) = 80/140 + 60/140 - 36/140 = 104/140 = 0.7429。", "fig": "figures/ch5_q29.png", "card_img": "figures/cards/card_calc_ch5_q29.png"}, {"id": "calc_ch5_q35", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 35", "title": "雙向列聯表之邊際機率、條件機率與聯合機率", "question": "考慮雙向列聯表事件。\na. 求 P(A1)。\nb. 求 P(B1 | A2)。\nc. 求 P(B2 且 A3)。", "answer": "a. P(A1) = 3/10 = 0.30；  b. P(B1 | A2) = 1/3 = 0.33；  c. P(B2 且 A3) = 1/10 = 0.10。", "fig": "figures/ch5_q35.png", "card_img": "figures/cards/card_calc_ch5_q35.png"}, {"id": "calc_ch5_q41", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 41", "title": "貝氏定理（Bayes' Theorem）雙分割事後機率推導", "question": "已知 P(A1) = 0.60, P(A2) = 0.40, P(B1 | A1) = 0.05, P(B1 | A2) = 0.10。\n利用貝氏定理求事後機率 P(A1 | B1)。", "answer": "P(A1 | B1) = [P(A1)P(B1|A1)] / [P(A1)P(B1|A1) + P(A2)P(B1|A2)] = (0.60 × 0.05) / [(0.60 × 0.05) + (0.40 × 0.10)] = 0.030 / 0.070 = 0.4286。", "fig": "figures/ch5_q41.png", "card_img": "figures/cards/card_calc_ch5_q41.png"}, {"id": "calc_ch5_q43", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 43", "title": "棒球隊日夜賽贏球貝氏事後修正", "question": "小聯盟球隊有 70% 的比賽在夜間進行，30% 在白天進行。夜間贏球機率為 50%，白天贏球機率為 90%。已知該隊贏得一場比賽，求該場比賽是在夜間進行的事後機率 P(夜間 | 贏)。", "answer": "P(夜間 | 贏) = P(夜間)P(贏|夜間) / [P(夜間)P(贏|夜間) + P(白天)P(贏|白天)] = (0.70)(0.50) / [(0.70)(0.50) + (0.30)(0.90)] = 0.35 / 0.62 = 0.5645。", "fig": "figures/ch5_q43.png", "card_img": "figures/cards/card_calc_ch5_q43.png"}, {"id": "calc_ch5_q45", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 45", "title": "百貨公司消費金額超額付款方式貝氏分析", "question": "百貨公司客戶使用現金、信用卡、簽帳卡的比例分別為 30%、30%、40%。各支付方式消費金額超過 $50 的機率分別為 20%、90%、60%。若某筆消費超過 $50，求其使用現金支付的事後機率 P(現金 | >$50)。", "answer": "P(現金 | > $50) = P(現金)P(>$50|現金) / [P(現金)P(>$50|現金) + P(信用卡)P(>$50|信用卡) + P(簽帳卡)P(>$50|簽帳卡)] = (0.30)(0.20) / [(0.30)(0.20) + (0.30)(0.90) + (0.40)(0.60)] = 0.060 / 0.570 = 0.1053。", "fig": "figures/ch5_q45.png", "card_img": "figures/cards/card_calc_ch5_q45.png"}, {"id": "calc_ch5_q59", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 59", "title": "籃球半決賽獨立事件乘法規則", "question": "女子大學籃球賽半決賽，甲隊獲勝賠率換算機率為 2/3，乙隊獲勝機率為 3/4。假設兩場比賽互相獨立。\na. 兩隊皆晉級決賽的機率為何？\nb. 兩隊皆未晉級的機率為何？\nc. 至少有一隊晉級決賽的機率為何？", "answer": "a. 1/2，由 (2/3)(3/4) 得到；  b. 1/12，由 (1/3)(1/4) 得到；  c. 11/12，由 1 − 1/12 得到。", "fig": "figures/ch5_q59.png", "card_img": "figures/cards/card_calc_ch5_q59.png"}, {"id": "calc_ch5_q61", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 61", "title": "男性存活獨立事件與對立事件互補", "question": "根據生命表，60 歲男性隔年仍存活的機率為 0.98。選取 5 位 60 歲男性。\na. 5 位隔年全部存活的機率是多少？\nb. 至少有一位在隔年過世的機率是多少？", "answer": "a. 0.9039，由 (0.98)^5 得到；  b. 0.0961，由 1 − 0.9039 得到。", "fig": "figures/ch5_q61.png", "card_img": "figures/cards/card_calc_ch5_q61.png"}, {"id": "calc_ch5_q67", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 67", "title": "廣告記憶與讀報關聯條件機率", "question": "某地區 60% 居民訂閱報紙 (S)。在訂戶中，85% 能記住特定廣告 (R)。\na. 既是訂戶又能記住廣告的機率為何？\nb. 是訂戶但記不住該廣告的機率為何？", "answer": "a. P(S) × P(R | S) = 0.60 × 0.85 = 0.51；  b. P(S) × P(~R | S) = 0.60 × (1 − 0.85) = 0.09。", "fig": "figures/ch5_q67.png", "card_img": "figures/cards/card_calc_ch5_q67.png"}, {"id": "calc_ch5_q69", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 69", "title": "微型記憶卡瑕疵抽驗互補原則", "question": "檢驗 1,000 張微型 SD 卡，其中 112 張有小瑕疵，31 張不能用，其餘為良品。\na. 隨機選取一張，不是良品的機率是多少？\nb. 若已知不是良品，它屬於不能用的條件機率是多少？", "answer": "a. P(不是良品) = P(小瑕疵) + P(不能用) = 112/1,000 + 31/1,000 = 0.143；  b. P(不能用 | 不是良品) = 0.031 / 0.143 = 0.217。", "fig": "figures/ch5_q69.png", "card_img": "figures/cards/card_calc_ch5_q69.png"}, {"id": "calc_ch5_q71", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 71", "title": "服飾店發展前景與獲利貝氏決策樹", "question": "女性服飾店評估連鎖分店，優等、中等、劣等地點機率為 10%、60%、30%。各類地點第一年獲利的條件機率分別為 20%、80%、60%。若分店第一年獲利，求該地點為劣等地點的事後機率 P(劣等 | 有利潤)。", "answer": "P(劣等 | 有利潤) = 0.10(0.20) / [0.10(0.20) + 0.60(0.80) + 0.30(0.60)] = 0.020 / 0.680 = 0.0294。", "fig": "figures/ch5_q71.png", "card_img": "figures/cards/card_calc_ch5_q71.png"}, {"id": "calc_ch5_q73", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 73", "title": "刮刮樂連續未中獎之對立事件分析", "question": "披薩店刮刮樂活動，刮中免費披薩機率為 0.10，刮中免費可樂機率為 0.02。\na. 顧客光顧一次獲得免費披薩或可樂的機率為何？\nb. 光顧一次完全未中獎的機率為何？\nc. 連續光顧 3 次皆未中獎的機率為何？\nd. 連續光顧 3 次中至少中獎一次的機率為何？", "answer": "a. 0.1 + 0.02 = 0.12；  b. 1 − 0.12 = 0.88；  c. (0.88)^3 = 0.6815；  d. 1 − 0.6815 = 0.3185。", "fig": "figures/ch5_q73.png", "card_img": "figures/cards/card_calc_ch5_q73.png"}, {"id": "calc_ch5_q87", "chapter": 5, "chapter_name": "機率觀念概述", "q_num": "第 5 章 習題 87", "title": "四家映像管供應商瑕疵品貝氏歸屬", "question": "四家供應商（Tyson, Fuji, Kirkpatricks, Parts）供應比例分別為 20%、30%、25%、25%，其產品瑕疵率分別為 3%、4%、7%、6.5%。\na. 隨機抽取一件零件，為瑕疵品的機率 P(D) 為何？\nb. 若抽得瑕疵品，其來自 Tyson 供應商的事後機率為何？", "answer": "a. P(D) = 0.20(0.03) + 0.30(0.04) + 0.25(0.07) + 0.25(0.065) = 0.05175；\nb. P(Tyson | 有瑕疵) = 0.20(0.03) / 0.05175 = 0.1159（修正表：Tyson 0.1159, Fuji 0.2319, Kirkpatricks 0.3382, Parts 0.3140）。", "fig": "figures/ch5_q87.png", "card_img": "figures/cards/card_calc_ch5_q87.png"}, {"id": "calc_ch6_q23", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 23", "title": "二項分配 B(15, 0.70) 成功維修案件機率", "question": "維修工程師修復成功率為 0.70，隨機抽取 15 件維修個案。\na. 計算成功維修案件的平均數與標準差。\nb. 剛好成功修復 10 件的機率是多少？\nc. 剛好成功修復 10 或 11 件的機率是多少？\nd. 成功修復超過 10 件的機率是多少？", "answer": "a. μ = 10.5，由 15 × 0.7 得到。σ = √(15(0.7)(0.3)) = 1.7748；\nb. 0.2061，由 (15! / (10!5!)) (0.7)^10 (0.3)^5 得到；\nc. 0.4247，由 0.2061 + 0.2186 得到；\nd. 0.5154，由 0.2186 + 0.1700 + 0.0916 + 0.0305 + 0.0047 得到。", "fig": "figures/ch6_q23.png", "card_img": "figures/cards/card_calc_ch6_q23.png"}, {"id": "calc_ch6_q27", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 27", "title": "超幾何機率分配：房地產價外貸款抽樣", "question": "母體共有 10 筆貸款，其中 3 筆為價外貸款。銀行審計人員隨機抽取 2 筆貸款。\n求抽取的 2 筆中沒有價外貸款 (x = 0) 的機率。", "answer": "N 是 10，即母體中的貸款數量；S 是 3，即母體中的價外貸款數量；x 是 0，即樣本中的價外貸款數量；n 是 2，即樣本大小。使用公式 (6-6) 求出 P(0) = (7C2)(3C0)/10C2 = 21(1)/45 = 0.4667。", "fig": "figures/ch6_q27.png", "card_img": "figures/cards/card_calc_ch6_q27.png"}, {"id": "calc_ch6_q29", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 29", "title": "超幾何機率分配：送貨車煞車問題抽樣", "question": "15 輛送貨車中有 6 輛煞車有問題。隨機抽驗 5 輛車，求其中剛好有 2 輛煞車有問題的機率。", "answer": "P(2) = (9C3)(6C2) / 15C5 = 84(15) / 3,003 = 0.4196。", "fig": "figures/ch6_q29.png", "card_img": "figures/cards/card_calc_ch6_q29.png"}, {"id": "calc_ch6_q35", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 35", "title": "卜瓦松分配近似二項客服占線機率", "question": "航空公司接到 1,200 通電話，每通電話被轉到客服人員的機率為 0.005。利用卜瓦松分配求至少有 5 通電話被轉接的機率。", "answer": "π (或 μ) = 6，P(x ≥ 5) = 1 − (0.0025 + 0.0149 + 0.0446 + 0.0892 + 0.1339) = 0.7149。", "fig": "figures/ch6_q35.png", "card_img": "figures/cards/card_calc_ch6_q35.png"}, {"id": "calc_ch6_q43", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 43", "title": "二項分配 B(10, 0.35) 冰淇淋偏好調查", "question": "35% 的成年人偏好香草冰淇淋。隨機調查 10 位成年人。\na. 偏好香草冰淇淋的期望人數是多少？\nb. 剛好有 4 人偏好的機率是多少？\nc. 至少有 4 人偏好的機率是多少？", "answer": "a. μ = 10(0.35) = 3.5；\nb. P(x = 4) = 10C4 (0.35)^4 (0.65)^6 = 210(0.0150)(0.0754) = 0.2375；\nc. P(x ≥ 4) = 10Cx (0.35)^x (0.65)^(10-x) = 0.2375 + 0.1536 + … + 0.0000 = 0.4862。", "fig": "figures/ch6_q43.png", "card_img": "figures/cards/card_calc_ch6_q43.png"}, {"id": "calc_ch6_q47", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 47", "title": "二項分配 B(20, 0.075) 職場嗑藥調查", "question": "某公司員工藥物檢驗呈陽性比例為 0.075。隨機抽驗 20 位員工。\na. 呈陽性人數的平均數與標準差為何？\nb. 沒有員工呈陽性的機率為何？\nc. 至少有一位員工呈陽性的機率為何？", "answer": "a. μ = 20(0.075) = 1.5，σ = √(20(0.075)(0.925)) = 1.1779；\nb. 0.2103，由 (20! / (0!20!)) (0.075)^0 (0.925)^20 得到；\nc. 0.7897，由 1 − 0.2103 得到。", "fig": "figures/ch6_q47.png", "card_img": "figures/cards/card_calc_ch6_q47.png"}, {"id": "calc_ch6_q55", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 55", "title": "超幾何分配：律師事務所委員會成員", "question": "法律事務所 10 位合夥人中，有 7 位來自俄亥俄州，3 位來自肯塔基州。隨機選出 3 位組成委員會。\na. 剛好有 1 位來自肯塔基州的機率？\nb. 至少有 1 位來自肯塔基州的機率？", "answer": "a. P(1) = (7C2)(3C1)/10C3 = (21)(3)/120 = 0.5250；\nb. P(0) = (7C3)(3C0)/10C3 = (35)(1)/120 = 0.2917，P(x ≥ 1) = 1 − P(0) = 1 − 0.2917 = 0.7083。", "fig": "figures/ch6_q55.png", "card_img": "figures/cards/card_calc_ch6_q55.png"}, {"id": "calc_ch6_q57", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 57", "title": "超幾何分配：警察局長面談代表性檢驗", "question": "警察局長候選人名單有 12 人，其中 4 人為少數族裔。市長隨機選出 4 人進行面談。\n求面談名單中沒有少數族裔 (x = 0) 的機率。", "answer": "P(x = 0) = (8C4)(4C0)/12C4 = 70/495 = 0.141。", "fig": "figures/ch6_q57.png", "card_img": "figures/cards/card_calc_ch6_q57.png"}, {"id": "calc_ch6_q63", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 63", "title": "卜瓦松分配：每分鐘車輛失竊機率 (μ = 3.1)", "question": "美國每分鐘有 3.1 輛車失竊，失竊數符合卜瓦松分配 (μ = 3.1)。\na. 1 分鐘內剛好有 4 輛車失竊的機率是多少？\nb. 1 分鐘內沒有車子失竊的機率是多少？\nc. 1 分鐘內至少有一輛車失竊的機率是多少？", "answer": "a. 0.1733，由 (3.1)^4 e^(-3.1) / 4! 得出；\nb. 0.0450，由 (3.1)^0 e^(-3.1) / 0! 得出；\nc. 0.9550，由 1 − 0.0450 得出。", "fig": "figures/ch6_q63.png", "card_img": "figures/cards/card_calc_ch6_q63.png"}, {"id": "calc_ch6_q65", "chapter": 6, "chapter_name": "離散型機率分配", "q_num": "第 6 章 習題 65", "title": "卜瓦松分配：SpaceX 載人火箭發射風險", "question": "載人太空發射失敗機率為 1/276。預計發射 20 次。\n求預期失敗次數、零失敗機率、失敗 1 次機率，以及失敗超過 0 次的機率。", "answer": "μ = nπ = 20(1/276) = 0.0725；P(0) = (0.0725)^0 e^(-0.0725)/0! = 0.930；P(1) = (0.0725)^1 e^(-0.0725)/1! = 0.067；P(x > 0) = 1 − P(x = 0) = 1 − 0.930 = 0.070。", "fig": "figures/ch6_q65.png", "card_img": "figures/cards/card_calc_ch6_q65.png"}, {"id": "calc_ch7_q1", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 1", "title": "均勻機率分配 U(6, 10) 參數與區間機率", "question": "連續隨機變數 X 依循 6 到 10 的均勻機率分配。\na. a 與 b 的值是多少？\nb. 計算平均數。\nc. 計算標準差。\nd. 顯示曲線下的總面積為 1。\ne. 計算 P(x > 7)。\nf. 計算 P(7 ≤ x ≤ 9)。\ng. 計算 P(x = 7.91)。", "answer": "a. b = 10，a = 6；\nb. μ = (6 + 10)/2 = 8；\nc. σ = √((10 - 6)^2 / 12) = 1.1547；\nd. 面積 = (1/(10 - 6)) · (10 - 6) = 1；\ne. P(x > 7) = (1/(10 - 6)) · (10 - 7) = 3/4 = 0.75；\nf. P(7 ≤ x ≤ 9) = (1/(10 - 6)) · (9 - 7) = 2/4 = 0.50；\ng. P(x = 7.91) = 0（對連續機率分配而言，某一點數值的面積為 0）。", "fig": "figures/ch7_q1.png", "card_img": "figures/cards/card_calc_ch7_q1.png"}, {"id": "calc_ch7_q5", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 5", "title": "均勻機率分配應用：Flagstaff 降雨量機率", "question": "亞利桑那州 Flagstaff 七月份降雨量依循 0.5 到 3.00 英寸的均勻分配。\na. a 與 b 的值是多少？\nb. 計算平均數與標準差。\nc. 降雨量小於 1 英寸的機率是多少？\nd. 降雨量剛好為 1.00 英寸的機率是多少？\ne. 降雨量超過 1.5 英寸的機率是多少？", "answer": "a. a = 0.5，b = 3.00；\nb. μ = (0.5 + 3.00)/2 = 1.75，σ = √((3.00 - 0.50)^2 / 12) = 0.72；\nc. P(x < 1) = (1/(3.0 - 0.5)) · (1 - 0.5) = 0.5/2.5 = 0.2；\nd. 0，由 (1/(3.0 - 0.5)) · (1.0 - 1.0) 得到；\ne. P(x > 1.5) = (1/(3.0 - 0.5)) · (3.0 - 1.5) = 1.5/2.5 = 0.6。", "fig": "figures/ch7_q5.png", "card_img": "figures/cards/card_calc_ch7_q5.png"}, {"id": "calc_ch7_q7", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 7", "title": "常態分配 N(20, 4) 標準化 z 值轉換與查表", "question": "常態分配隨機變數 X，平均數 μ = 20，標準差 σ = 4.0。\na. 數值 25 的 z 值是多少？\nb. X 落在 20 到 25 之間的機率是多少？\nc. X 小於 18 的機率是多少？", "answer": "a. 1.25，由 z = (25 - 20)/4.0 = 1.25 得到；\nb. 0.3944，查閱書末附表 3 得出；\nc. 0.3085，由 z = (18 - 20)/4.0 = -0.5 得到。在書末附表 3 中找到對應 z = -0.5 的面積是 0.1915。接著，0.5000 − 0.1915 = 0.3085。", "fig": "figures/ch7_q7.png", "card_img": "figures/cards/card_calc_ch7_q7.png"}, {"id": "calc_ch7_q9", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 9", "title": "空服員時薪常態分配 N(29.81, 9.31) 區間機率", "question": "空服員時薪依循常態分配，平均數 μ = $29.81，標準差 σ = $9.31。\na. 時薪落在 $29.81 到 $35.00 之間的機率是多少？\nb. 時薪超過 $35.00 的機率是多少？\nc. 時薪少於 $20.00 的機率是多少？", "answer": "a. 0.2123，由 z = (35.00 - 29.81)/9.31 = 0.56 得到，然後在書末附表 3 中找到 z = 0.56 相應的面積是 0.2123；\nb. 0.2877，由 0.5000 − 0.2123 得到；\nc. 0.1469，由 z = (20.00 - 29.81)/9.31 = -1.05 得到。在書末附表 3 中找到 z = -1.05 相應的面積是 0.3531。接著，0.5000 − 0.3531 = 0.1469。", "fig": "figures/ch7_q9.png", "card_img": "figures/cards/card_calc_ch7_q9.png"}, {"id": "calc_ch7_q11", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 11", "title": "常態分配 N(50, 4) 雙側跨度與同側機率判定", "question": "常態分配隨機變數，平均數 μ = 50，標準差 σ = 4.0。\na. 計算 P(44 ≤ x ≤ 55)。\nb. 計算 P(x > 55)。\nc. 計算 P(52 ≤ x ≤ 55)。", "answer": "a. 0.8276：先求出 z = -1.5，由 (44 - 50)/4 得出，以及 z = 1.25 = (55 - 50)/4。根據書末附表 3，介於 -1.5 到 0 之間的面積是 0.4332，而在 0 與 1.25 之間的面積是 0.3944。之後將這兩個面積相加，我們得到 0.4332 + 0.3944 = 0.8276；\nb. 0.1056，由 0.5000 − 0.3944 得到，其中 z = 1.25；\nc. 0.2029：回想對應 z = 1.25 的面積是 0.3944，以及對應 z = 0.5 的面積是 0.1915，由 (52 - 50)/4 得到。之後相減 0.3944 − 0.1915，就會得到 0.2029。", "fig": "figures/ch7_q11.png", "card_img": "figures/cards/card_calc_ch7_q11.png"}, {"id": "calc_ch7_q13", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 13", "title": "2022 年退稅金額常態分配 N(3401, 82.5)", "question": "2022 年納稅人退稅金額依循常態分配，平均數為 $3,401，標準差為 $82.5。\na. 退稅金額超過 $3,500 的百分比是多少？\nb. 退稅金額介於 $3,500 與 $3,579 之間的百分比是多少？\nc. 退稅金額介於 $3,325 與 $3,579 之間的百分比是多少？", "answer": "a. 0.1151：首先使用公式 (7-5) 求出 $3,500 的 z 值，是 (3,500 - 3,401)/82.5，或 1.20。然後查閱書末附表 3 來找出 0 與 1.20 之間的面積，為 0.3849。最後，因為關注的面積是在 1.20 以上，所以將 0.5000 減去該機率。結果是 0.5000 – 0.3849，或 0.1151；\nb. 0.0997：使用公式 (7-5) 求出 $3,579 的 z 值，是 (3,579 - 3,401)/82.5，或 2.16。然後查閱書末附表 3 來找出標準常態曲線下的面積，該機率是 0.4846。因為這兩點（1.20 與 2.16）在平均數的同一邊，就將較大的機率減去較小的機率。結果是 0.4846 − 0.3849 = 0.0997；\nc. 0.8058：使用公式 (7-5) 算出 $3,325 的 z 值，是 -0.92，由 (3,325 - 3,401)/82.5 得到。相應的面積是 0.3212。因為 -0.92 與 2.16 在平均數的兩邊，就將相應的機率相加。因此，我們得到 0.3212 + 0.4846 = 0.8058。", "fig": "figures/ch7_q13.png", "card_img": "figures/cards/card_calc_ch7_q13.png"}, {"id": "calc_ch7_q15", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 15", "title": "電台廣播收聽時間常態分配 N(15, 3.5)", "question": "上班族開車收聽電台新聞的平均時間為 15 分鐘，標準差為 3.5 分鐘。\na. 開車收聽時間超過 20 分鐘的機率為何？\nb. 開車收聽時間不超過 20 分鐘的機率為何？\nc. 開車收聽時間在 10 到 12 分鐘之間的機率為何？", "answer": "a. 0.0764，由以下過程得出：z = (20 - 15)/3.5 = 1.43，之後，0.5000 − 0.4236 = 0.0764；\nb. 0.9236，由 0.5000 + 0.4236 得到，其中 z = 1.43；\nc. 0.1185，由 z = (12 - 15)/3.5 = -0.86 得到。曲線下的面積是 0.3051，之後 z = (10 - 15)/3.5 = -1.43。面積是 0.4236。最後，0.4236 − 0.3051 = 0.1185。", "fig": "figures/ch7_q15.png", "card_img": "figures/cards/card_calc_ch7_q15.png"}, {"id": "calc_ch7_q21", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 21", "title": "常態分配反查 z 值求極端 1% 百分位數門檻", "question": "個人電腦使用者聆聽串流音樂的時間依循常態分配。\na. 去年平均數為 195 小時，標準差為 8.5 小時。聆聽時間最高 1% 的使用者至少聽了多少小時？\nb. 4 年前平均數為 290 小時，標準差為 8.5 小時。聆聽時間最低 1% 的使用者至多聽了多少小時？", "answer": "a. 214.8 小時：找出介於 0 與 z 之間的面積是 0.4900 的 z 值。該 z 值是 2.33。然後解 x：2.33 = (x - 195)/8.5，所以 x = 214.8 小時；\nb. 270.2 小時：找出介於 0 與 (-z) 之間的面積是 0.4900 的 z 值。該 z 值是 -2.33。然後解 x：-2.33 = (x - 290)/8.5，所以 x = 270.2 小時。", "fig": "figures/ch7_q21.png", "card_img": "figures/cards/card_calc_ch7_q21.png"}, {"id": "calc_ch7_q37", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 37", "title": "可樂罐裝容量均勻分配 U(11.96, 12.05)", "question": "某裝瓶廠可樂罐裝容量依循 11.96 到 12.05 盎司的均勻機率分配。\na. 計算平均容量。\nb. 計算標準差。\nc. 容量小於 12.00 盎司的機率是多少？\nd. 容量大於 11.98 盎司的機率是多少？\ne. 容量大於 11.00 盎司的機率是多少？", "answer": "a. μ = (11.96 + 12.05)/2 = 12.005；\nb. σ = √((12.05 - 11.96)^2 / 12) = 0.0260；\nc. P(x < 12) = (1/(12.05 - 11.96)) · ((12.00 - 11.96)/1) = 0.04/0.09 = 0.44；\nd. P(x > 11.98) = (1/(12.05 - 11.96)) · ((12.05 - 11.98)/1) = 0.07/0.09 = 0.78；\ne. 所有的可樂容量皆超過 11 盎司，所以機率是 100%。", "fig": "figures/ch7_q37.png", "card_img": "figures/cards/card_calc_ch7_q37.png"}, {"id": "calc_ch7_q39", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 39", "title": "信用卡申請審核時間均勻分配 U(4, 10)", "question": "百貨公司信用卡審核時間依循 4 到 10 分鐘的均勻機率分配。\na. 計算平均審核時間。\nb. 計算審核時間的標準差。\nc. 審核時間小於 6 分鐘的機率是多少？\nd. 審核時間大於 5 分鐘的機率是多少？", "answer": "a. μ = (4 + 10)/2 = 7；\nb. σ = √((10 - 4)^2 / 12) = 1.732；\nc. P(x < 6) = (1/(10 - 4)) · ((6 - 4)/1) = 2/6 = 0.33；\nd. P(x > 5) = (1/(10 - 4)) · ((10 - 5)/1) = 5/6 = 0.83。", "fig": "figures/ch7_q39.png", "card_img": "figures/cards/card_calc_ch7_q39.png"}, {"id": "calc_ch7_q31", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 31【指數分配參考題，已劃叉不考】", "title": "Subway 潛艇堡等候時間指數分配 (λ = 1/60)", "question": "Subway 顧客點餐等候時間依循指數機率分配，平均等候時間為 60 秒 (μ = 60)。\na. 等候時間不到 30 秒的機率？\nb. 等候時間超過 120 秒的機率？\nc. 等候時間在 45 到 75 秒之間的機率？\nd. 50% 顧客等候時間少於多少秒（中位數）？", "answer": "a. 0.3935，由 1 − e^[(-1/60)(30)] 得出；\nb. 0.1353，由 e^[(-1/60)(120)] 得出；\nc. 0.1859，由 e^[(-1/60)(45)] − e^[(-1/60)(75)] 得出；\nd. 41.59 秒，由 -60 ln(0.5) 得出。", "fig": "figures/ch7_q31.png", "card_img": "figures/cards/card_calc_ch7_q31.png"}, {"id": "calc_ch7_q57", "chapter": 7, "chapter_name": "連續型機率分配", "q_num": "第 7 章 習題 57【指數分配參考題，已劃叉不考】", "title": "電腦開機時間指數分配 (λ = 1/27)", "question": "某新型電腦開機時間依循指數機率分配，平均開機時間為 27 秒 (μ = 27)。\na. 開機時間不超過 15 秒的機率？\nb. 開機時間超過 60 秒的機率？\nc. 開機時間在 30 到 45 秒之間的機率？\nd. 前 10% 最快完成開機的時間門檻為何？", "answer": "a. 0.4262，由 1 − e^[(-1/27)(15)] 得出；\nb. 0.1084，由 e^[(-1/27)(60)] 得出；\nc. 0.1403，由 e^[(-1/27)(30)] − e^[(-1/27)(45)] 得出；\nd. 2.84 秒，由 -27 ln(0.9) 得出。", "fig": "figures/ch7_q57.png", "card_img": "figures/cards/card_calc_ch7_q57.png"}];
+    const quizData = [{"id": "quiz_ch1_01", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "敘述統計 vs 推論統計", "question": "某民調機構隨機抽樣 1,000 位成年選民，發現有 58% 支持某項政策，並據此推論「全國有接近六成的選民支持該政策」。請問「全國有接近六成選民支持該政策」的結論屬於統計學的哪一個範疇？", "options": ["敘述統計學 (Descriptive Statistics)", "推論統計學 (Inferential Statistics)", "母體普查 (Population Census)", "規範性統計學 (Normative Statistics)"], "answer": 1, "analysis": "【正確答案】：B。推論統計學（Inferential Statistics）是根據樣本資料的特徵，來對未知母體的總體特性進行推論、估計或假設檢定的方法。若僅陳述「這 1,000 位受訪者中有 58% 支持」，則屬於敘述統計學。"}, {"id": "quiz_ch1_02", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "母體與參數 vs 樣本與統計量", "question": "下列關於「母體 (Population)」、「樣本 (Sample)」、「參數 (Parameter)」與「統計量 (Statistic)」的敘述，何者正確？", "options": ["參數是用來描述樣本特徵的數值，會隨抽樣而改變", "統計量是用來描述母體特徵的固定常數", "母體是研究者感興趣的所有個體之集合，其數值特徵稱為參數", "只要樣本數夠大，統計量就會變成參數"], "answer": 2, "analysis": "【正確答案】：C。母體（Population）是所有感興趣個體的完整集合，其固定特徵稱為「參數（Parameter，如 μ, σ）」；而由母體中抽取的部分個體集合為「樣本（Sample）」，其計算出的特徵數值稱為「統計量（Statistic，如 X̄, s）」。"}, {"id": "quiz_ch1_03", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "易錯陷阱題", "key_point": "四大測量尺度判定", "question": "某公司員工資料表中包含以下變數：① 員工編號、② 職級評等（初級/中級/資深）、③ 辦公室攝氏溫度、④ 員工月薪。這四個變數對應的測量尺度依序為何？", "options": ["名目尺度、順序尺度、區間尺度、比例尺度", "順序尺度、順序尺度、比例尺度、比例尺度", "名目尺度、區間尺度、區間尺度、比例尺度", "區間尺度、順序尺度、比例尺度、比例尺度"], "answer": 0, "analysis": "【正確答案】：A。① 員工編號僅具辨識代號功能，無大小差距，為「名目尺度」；② 職級有高低先後等級，但等第間差距無實質數值意義，為「順序尺度」；③ 攝氏溫度數值差距有意義，但 0°C 不代表完全沒有溫度（無自然絕對零點），不能做倍數比較，為「區間尺度」；④ 月薪具有絕對零點（0 元代表沒錢），可做加減與倍數比較，為「比例尺度」。"}, {"id": "quiz_ch1_04", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "區間尺度 vs 比例尺度", "question": "「區間尺度 (Interval Scale)」與「比例尺度 (Ratio Scale)」最關鍵的區別在於下列何者？", "options": ["區間尺度只能用於屬質資料，比例尺度用於屬量資料", "區間尺度的數值差距沒有意義，比例尺度的數值差距才有意義", "比例尺度具有自然的「絕對零點 (Absolute Zero)」，而區間尺度的零點是人為定義的", "區間尺度可以進行乘除運算，比例尺度只能進行加減運算"], "answer": 2, "analysis": "【正確答案】：C。比例尺度具有「實質絕對零點（0 代表該屬性完全不存在，如身高 0 公分、所得 0 元）」，因此可以進行比值運算（例如 40 元是 20 元的 2 倍）；而區間尺度的零點僅是人為相對基準點（如 0°C 或西元 0 年），40°C 並不是 20°C 的兩倍熱。"}, {"id": "quiz_ch1_05", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "易錯陷阱題", "key_point": "離散型 vs 連續型隨機變數", "question": "下列哪一個變數屬於「離散型量變數 (Discrete Quantitative Variable)」？", "options": ["高鐵列車由台北行駛至左營的實際運行時間", "銀行分行櫃檯在今日營業時間內接待的顧客總人數", "一罐可樂的實際淨重（毫升）", "某晶圓代工廠生產之晶圓表面厚度"], "answer": 1, "analysis": "【正確答案】：B。離散型變數通常是「計數（Counting）」的結果，數值之間有明顯中斷點（如 0, 1, 2, 3 人，不可能有 2.45 個人）；而運行時間、重量、厚度皆為「測量（Measuring）」的結果，在任意區間內可取無限多個小數值，屬於「連續型變數」。"}, {"id": "quiz_ch1_06", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "屬質變數 vs 屬量變數", "question": "顧客滿意度調查中，選項為「1: 非常不滿意、2: 不滿意、3: 普通、4: 滿意、5: 非常滿意」。此變數的本質與測量尺度為何？", "options": ["屬量變數，比例尺度", "屬質變數，順序尺度", "屬量變數，區間尺度", "屬質變數，名目尺度"], "answer": 1, "analysis": "【正確答案】：B。李克特五點量表（Likert Scale）本質上是「屬質（類別）變數」，數值 1 到 5 只是代表評等高低的代碼，數值間的差距無法精確等距化（「滿意與普通」的心理差距未必等於「普通與不滿意」），故屬於「順序尺度（Ordinal Scale）」。"}, {"id": "quiz_ch1_07", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "推論統計的抽樣必要性", "question": "在現代商務與統計研究中，研究者多半透過「樣本」而非「母體普查」來進行分析，下列何者「不是」採取抽樣的主要原因？", "options": ["普查的成本過於昂貴且耗費過多時間", "某些測試具有破壞性（例如測試燈泡壽命或安全氣囊）", "抽樣取得的結果在任何情況下都比普查更加精準無誤", "母體規模可能極為龐大甚至無限，實務上不可能完全掌握"], "answer": 2, "analysis": "【正確答案】：C。選項 C 錯誤。抽樣一定存在抽樣誤差（Sampling Error），普查在理論上若無調查誤差可涵蓋所有個體。抽樣的主因是：成本經濟性、時效性、部分檢驗具破壞性（如安全氣囊撞擊測試），以及母體過大難以窮盡。"}, {"id": "quiz_ch1_08", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "測量尺度的數學運算能力", "question": "下列哪一種測量尺度的資料，「不適合」計算平均數，但可以計算「中位數」與「眾數」？", "options": ["名目尺度 (Nominal Scale)", "順序尺度 (Ordinal Scale)", "區間尺度 (Interval Scale)", "比例尺度 (Ratio Scale)"], "answer": 1, "analysis": "【正確答案】：B。順序尺度可以排序，因此具備計算「中位數（排序正中間值）」與「眾數」的意義；但因級距無等距數值意義，不適合進行加減計算平均數。名目尺度則僅能求眾數（無法排序故無中位數）。"}, {"id": "quiz_ch1_09", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "觀念題", "key_point": "商業統計倫理", "question": "在呈現統計圖表時，下列哪種做法「違反」了統計呈現的真實性與商業倫理？", "options": ["在直方圖中標註每組的實際觀察次數與相對次數", "刻意將縱軸起點截斷（不從 0 開始）且未做斷裂記號，以視覺誇大兩組產品微小的銷售差異", "同時提供平均數與中位數以反映偏態資料的真實分配情況", "明確揭露樣本大小、抽樣期間與資料來源"], "answer": 1, "analysis": "【正確答案】：B。投影片 Chapter 1 特別強調商業倫理：刻意縮放或截斷座標軸以人為放大微小差異，屬於誤導決策者的不當統計操弄。"}, {"id": "quiz_ch1_10", "chapter": 1, "chapter_name": "第 1 章：何謂統計學？", "category": "易錯陷阱題", "key_point": "年份與日期的測量尺度", "question": "某歷史經濟學研究記錄了上市公司的「成立年份（如 1985 年、2010 年）」，請問「年份」屬於何種測量尺度？", "options": ["比例尺度，因為年份是純數字且數字愈大年份愈新", "區間尺度，因為年份有等距差距，但西元 0 年並非時間的絕對不存在起點", "順序尺度，因為年份只能代表先後先後順序", "名目尺度，因為年份只是一種符號標籤"], "answer": 1, "analysis": "【正確答案】：B。年份屬於經典的「區間尺度（Interval Scale）」。2020 年與 2010 年之間差距為 10 年，差距有實質物理意義；但不能說 2000 年是西元 1000 年的「兩倍時間」，因為西元 0 年是人為約定的原點，並非時間的絕對起點。"}, {"id": "quiz_ch2_01", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "計算題", "key_point": "2^k 分組法則", "question": "某市場研究調查蒐集了 n = 150 筆消費金額資料。根據統計學建議之「2^k 法則（2^k ≥ n）」，最適的分組組數 k 應建議為幾組？", "options": ["6 組", "7 組", "8 組", "9 組"], "answer": 2, "analysis": "【正確答案】：C。2^k 法則要求 2^k ≥ n。計算：2^6 = 64 < 150；2^7 = 128 < 150；2^8 = 256 ≥ 150。因此建議組數為 k = 8 組。"}, {"id": "quiz_ch2_02", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "計算題", "key_point": "組距計算公式", "question": "一組樣本資料中，最高數值為 98，最低數值為 14。若決定將資料分成 6 組，則根據組距計算公式 i ≥ (H - L)/k，其建議之適當組距 i 最可能選取下列何者？", "options": ["12", "14", "15", "10"], "answer": 2, "analysis": "【正確答案】：C。理論最小組距 i ≥ (H - L)/k = (98 - 14) / 6 = 84 / 6 = 14。在統計實務與教材規範中，組距通常會向上取整至便於閱讀的數字（如 5 或 10 的倍數，或略大於理論值以確保包覆邊界），故選取 15 最適當且能完全涵蓋所有數據。"}, {"id": "quiz_ch2_03", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "易錯陷阱題", "key_point": "組中點計算與物理意義", "question": "在連續型次數分配表中，某一組之組區間標示為「30 以上至 45」，請問該組的「組中點 (Class Midpoint)」是多少？", "options": ["15", "37.5", "40", "35"], "answer": 1, "analysis": "【正確答案】：B。組中點公式為 M = (L + H) / 2 = (30 + 45) / 2 = 75 / 2 = 37.5。請注意不可將組距 (H - L = 15) 與組中點混淆！"}, {"id": "quiz_ch2_04", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "觀念題", "key_point": "直方圖 vs 長條圖", "question": "關於「直方圖 (Histogram)」與「長條圖 (Bar Chart)」的比較，下列敘述何者完全正確？", "options": ["長條圖用於連續型屬量資料，各長條之間必須緊密相連無間隔", "直方圖用於屬質（類別）資料，各長條之間留有空隙以示區隔", "直方圖用於連續型數值資料，相鄰長條緊密相連；長條圖用於類別資料，長條間留有適當間隔", "兩者完全相同，只是繪圖軟體的名稱差異"], "answer": 2, "analysis": "【正確答案】：C。直方圖橫軸代表連續的數值區間，因此相鄰長條互相緊貼（無間隙），長條面積代表頻率；長條圖橫軸代表彼此獨立的離散類別（如車廠品牌、血型），長條之間必須留有適度空隙以展現類別的獨立性。"}, {"id": "quiz_ch2_05", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "觀念題", "key_point": "次數多邊形繪製特徵", "question": "繪製「次數多邊形 (Frequency Polygon)」時，折線上的每一個座標點其橫座標 (X) 與縱座標 (Y) 應分別對應於何者？", "options": ["橫座標 X 為各組的組下限，縱座標 Y 為各組組距", "橫座標 X 為各組的組上限，縱座標 Y 為各組相對次數", "橫座標 X 為各組的組中點，縱座標 Y 為各組的出現次數（或相對次數）", "橫座標 X 為累積次數，縱座標 Y 為組中點"], "answer": 2, "analysis": "【正確答案】：C。次數多邊形是以每一組的「組中點」作為橫軸 X 座標、該組「次數（或相對次數）」作為縱軸 Y 座標描點，再以直線線段依序相連，並在前後兩端延伸至橫軸次數為 0 處閉合。"}, {"id": "quiz_ch2_06", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "觀念題", "key_point": "肩形圖（累積次數多邊形）特徵", "question": "下列關於「累積次數多邊形（Ogive，肩形圖）」的敘述，何者「錯誤」？", "options": ["橫軸座標代表各組的「組上限（小於上限之數值）」", "縱軸座標代表「累積次數」或「累積相對次數（累積百分比）」", "肩形圖的曲線具有單調遞增（或非遞減）的特性，絕不會向下彎折", "肩形圖可用來直接查出眾數，且圖形必然呈現左右對稱的鐘形"], "answer": 3, "analysis": "【正確答案】：D。選項 D 錯誤。肩形圖呈現的是累積頻率（累加過程必然單調上升或持平），主要用於快速估算百分位數（例如 50% 中位數、75% 四分位數），並非用來查眾數，更不可能呈現左右對稱的鐘形。"}, {"id": "quiz_ch2_07", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "計算題", "key_point": "圓形圖圓心角計算", "question": "某飲料品牌在市場調查中的相對次數（市占率）為 35%，若將此結果繪製於圓形圖 (Pie Chart) 中，其所對應的圓心角應為幾度？", "options": ["90 度", "126 度", "135 度", "70 度"], "answer": 1, "analysis": "【正確答案】：B。圓形圖全圓為 360 度。圓心角 = 360° × 35% = 360° × 0.35 = 126°。"}, {"id": "quiz_ch2_08", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "觀念題", "key_point": "分組次數表的互斥與周延性", "question": "編製次數分配表時，組別必須具備「互斥 (Mutually Exclusive)」與「周延 (Collectively Exhaustive)」兩大原則，這代表什麼意思？", "options": ["每一筆觀測值只能且必須剛好落入其中一個組別，不得重複亦不得遺漏", "各組組距可以任意變動，且組數愈多愈好", "第一組的組下限必須等於資料最小值，最後一組上限必須等於最大值", "每組內的次數必須完全相等"], "answer": 0, "analysis": "【正確答案】：A。「互斥」意指任何一筆資料絕不可能同時落入兩組（分組邊界必須嚴格定義，如「0 以上至 3 未滿」）；「周延」意指所有觀測值都找得到所屬組別，絕不允許任何資料被遺漏在分組之外。"}, {"id": "quiz_ch2_09", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "易錯陷阱題", "key_point": "累積次數轉換判定", "question": "某工廠員工年資次數表如下：0~3年有 5 人，3~6年有 12 人，6~9年有 23 人，9~12年有 8 人，12~15年有 2 人。請問「年資少於 6 年」的員工共有多少人？", "options": ["12 人", "17 人", "40 人", "5 人"], "answer": 1, "analysis": "【正確答案】：B。「少於 6 年」涵蓋「0~3年」與「3~6年」兩個組別，累積人數為 5 + 12 = 17 人。若只看 3~6 年的 12 人就犯了未累加前一組的常見錯誤！"}, {"id": "quiz_ch2_10", "chapter": 2, "chapter_name": "第 2 章：次數表、次數分配與圖形的呈現", "category": "觀念題", "key_point": "圖表選用決策", "question": "若要向公司董事會報告全美 50 州分公司去年營業額佔全集團總營業額的「百分比份額構成」，下列哪一種圖形最為直覺適當？", "options": ["次數多邊形", "直方圖", "圓形圖 (Pie Chart) 或相對次數長條圖", "點圖 (Dot Plot)"], "answer": 2, "analysis": "【正確答案】：C。要呈現「各部分占總體的百分比份額（Composition/Share）」時，圓形圖（Pie chart）或具備百分比標籤的長條圖最能直接展現比例結構。"}, {"id": "quiz_ch3_01", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "觀念題", "key_point": "算術平均數重要代數性質", "question": "所有觀測值與其算術平均數之離差總和（Sum of Deviations from the Mean），即 ∑(X - X̄)，恆等於下列何者？", "options": ["1", "N（樣本數）", "0", "變異數 s^2"], "answer": 2, "analysis": "【正確答案】：C。算術平均數最核心的代數性質：∑(X - X̄) = ∑X - nX̄ = nX̄ - nX̄ = 0。所有數值對平均數的離差總和恆等於 0。"}, {"id": "quiz_ch3_02", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "易錯陷阱題", "key_point": "極端值對中心量數的影響", "question": "某科技新創公司有 9 位基層員工月薪為 4 萬元，1 位執行長月薪為 140 萬元。請問哪一個中心位置量數最能代表「一般典型員工」的薪資水準？", "options": ["算術平均數，因為它是 17.6 萬元", "中位數（4 萬元）或眾數（4 萬元），因為不受極端高值影響", "幾何平均數，因為它是唯一的科學指標", "全距，因為它包含了薪資的最高與最低範圍"], "answer": 1, "analysis": "【正確答案】：B。算術平均數極易受極端值（離群值）拉扯，此例平均月薪高達 (9×4 + 140)/10 = 17.6 萬元，嚴重偏離實際常態；而中位數（4 萬元）與眾數（4 萬元）具有抗極端值的穩健性（Robustness），最能真實反映一般典型數據。"}, {"id": "quiz_ch3_03", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "觀念題", "key_point": "偏態分配中平均數、中位數、眾數之大小順序", "question": "當一組資料呈現「右偏（正偏，Positively Skewed）」分配時，平均數、中位數與眾數三者的大小關係通常為何？", "options": ["平均數 < 中位數 < 眾數", "眾數 < 中位數 < 平均數", "中位數 < 平均數 < 眾數", "平均數 = 中位數 = 眾數"], "answer": 1, "analysis": "【正確答案】：B。右偏分配（長尾在右側）意味著右邊有少數極端高值，這些高值會將平均數大幅向右拉高，而中位數被拉動的幅度次之，眾數則停留在最高峰處。因此三者大小關係為：眾數 < 中位數 < 平均數。"}, {"id": "quiz_ch3_04", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "觀念題", "key_point": "左偏分配之特徵", "question": "當一組考試成績呈現「左偏（負偏，Negatively Skewed）」分配時，下列敘述何者正確？", "options": ["平均數大於中位數", "分配的右側有較長的拖尾", "大部分考生的成績集中在較高分區域，但有少數極低分將平均數拉低，使得 平均數 < 中位數 < 眾數", "資料完全呈現對稱鐘形"], "answer": 2, "analysis": "【正確答案】：C。左偏分配（長尾向左伸展）表示大部分資料落在高數值處，但左側存在少數極低數值將平均數往下扯，使得：平均數 < 中位數 < 眾數。"}, {"id": "quiz_ch3_05", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "易錯陷阱題", "key_point": "樣本變異數自由度 n-1", "question": "在計算「樣本變異數 (s^2)」時，公式的分母必須除以 (n - 1) 而非 n，其最主要的數理統計原因為何？", "options": ["為了讓計算結果更小", "因為除以 (n - 1) 才能使樣本變異數成為母體變異數 σ^2 的「不偏估計量 (Unbiased Estimator)」", "因為樣本中最後一個數值通常不可靠", "純粹是早期統計學家的習慣約定"], "answer": 1, "analysis": "【正確答案】：B。此即貝索校正（Bessel's Correction）。若樣本變異數除以 n，其期望值會小於母體變異數（造成低估）；除以自由度 (n - 1) 才能確保 E(s^2) = σ^2，達成「不偏估計性」。"}, {"id": "quiz_ch3_06", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "計算題", "key_point": "樣本變異數與標準差計算", "question": "抽樣 5 筆樣本數值：2, 4, 6, 8, 10。請問該樣本的「樣本平均數 x̄」與「樣本標準差 s」分別是多少？", "options": ["平均數 = 6，樣本標準差 s = 2.83", "平均數 = 6，樣本標準差 s = 3.16", "平均數 = 6，樣本標準差 s = 8.00", "平均數 = 5，樣本標準差 s = 2.50"], "answer": 1, "analysis": "【正確答案】：B。平均數 x̄ = (2+4+6+8+10)/5 = 30/5 = 6。離差平方和 ∑(x - x̄)^2 = (-4)^2 + (-2)^2 + 0^2 + 2^2 + 4^2 = 16 + 4 + 0 + 4 + 16 = 40。樣本變異數 s^2 = 40 / (5 - 1) = 40 / 4 = 10。樣本標準差 s = √10 ≈ 3.162。"}, {"id": "quiz_ch3_07", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "計算題", "key_point": "柴比雪夫法則應用", "question": "根據「柴比雪夫定理 (Chebyshev's Theorem)」，對於『任意形狀』的資料分配，落在平均數加減 2.5 個標準差（μ ± 2.5σ）範圍內的資料比例，至少有多少？", "options": ["至少 75%", "至少 84%", "至少 88.89%", "至少 95%"], "answer": 1, "analysis": "【正確答案】：B。柴比雪夫定理公式：至少比例 = 1 - 1/k^2。當 k = 2.5 時，至少比例 = 1 - 1/(2.5)^2 = 1 - 1/6.25 = 1 - 0.16 = 0.84 = 84%。（若 k=2 則為 75%；若 k=3 則為 88.89%）。"}, {"id": "quiz_ch3_08", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "易錯陷阱題", "key_point": "柴比雪夫 vs 常態經驗法則適用前提", "question": "某分析師對一組「呈現嚴重雙峰且高度偏態」的資料套用了「約 95% 的數據落在平均數加減 2 個標準差之內」的結論，請問這項推論是否恰當？為什麼？", "options": ["恰當，因為經驗法則適用於任何分配", "不恰當，因為「95% 經驗法則」僅適用於對稱且單峰之鐘形（常態）分配；非對稱資料應使用柴比雪夫法則（此時只能保證至少 75%）", "恰當，只要樣本數大於 30 就可以直接套用 95%", "不恰當，應該使用中位數加減四分位差"], "answer": 1, "analysis": "【正確答案】：B。常態「經驗法則 (Empirical Rule，68-95-99.7)」嚴格限定資料必須為「單峰且對稱的常態鐘形分配」；若已知資料為偏態或雙峰，只能使用「柴比雪夫法則」，其 k=2 只能保守宣稱「至少有 75% 的資料落在 μ ± 2σ 內」，不可妄稱約 95%。"}, {"id": "quiz_ch3_09", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "計算題", "key_point": "幾何平均數與複合增長率", "question": "某基金第一年的投資報酬率為 +10%（即增長為 1.10 倍），第二年的報酬率為 +40%（增長為 1.40 倍）。請問這兩年的「平均年增長倍數（幾何平均數）」約為多少？", "options": ["1.25 倍（報酬率 25%）", "1.24 倍（報酬率約 24.1%）", "1.54 倍（報酬率 54%）", "1.15 倍（報酬率 15%）"], "answer": 1, "analysis": "【正確答案】：B。連續期複利或百分比變化的平均值必須使用「幾何平均數 (Geometric Mean)」：GM = √(1.10 × 1.40) = √1.54 ≈ 1.241（年化報酬率約 24.1%）。若使用算術平均數 (10%+40%)/2 = 25% 則會高估複合成長成果。"}, {"id": "quiz_ch3_10", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "計算題", "key_point": "加權平均數計算", "question": "某大學生修習三門課，學分數與成績分別為：統計學（3 學分，80 分）、微積分（4 學分，70 分）、經濟學（3 學分，90 分）。請問該生的「學分加權平均成績」為幾分？", "options": ["80 分", "79 分", "82 分", "78 分"], "answer": 1, "analysis": "【正確答案】：B。加權平均數 X̄w = ∑(w·X) / ∑w = (3×80 + 4×70 + 3×90) / (3 + 4 + 3) = (240 + 280 + 270) / 10 = 790 / 10 = 79 分。"}, {"id": "quiz_ch3_11", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "觀念題", "key_point": "全距之缺點", "question": "關於離散程度量數「全距 (Range = 最大值 - 最小值)」的特性，下列敘述何者最為中肯？", "options": ["全距充分利用了樣本中的每一筆資料，因此估計最穩健", "全距計算容易且直觀，但缺點是僅考慮兩個極端值，完全忽略中間數值的分布情況，且極易受離群值扭曲", "全距恆大於變異數", "全距只適用於名目尺度的資料"], "answer": 1, "analysis": "【正確答案】：B。全距公式 Range = H - L，只用到最大值與最小值兩個數值，只要出現一個極端異常值全距就會劇烈暴增，且無法反映其餘 98% 內部數據的分散程度。"}, {"id": "quiz_ch3_12", "chapter": 3, "chapter_name": "第 3 章：數值的測量", "category": "觀念題", "key_point": "常態經驗法則 68-95-99.7", "question": "某公司員工多益英文測驗成績呈現常態分配，平均數為 600 分，標準差為 50 分。根據經驗法則，成績落在 550 分至 650 分之間的員工約佔全體員工的多少百分比？", "options": ["約 50%", "約 68%", "約 95%", "約 99.7%"], "answer": 1, "analysis": "【正確答案】：B。區間 [550, 650] 剛好為 μ ± 1σ = 600 ± 50。根據常態分配之經驗法則，落在平均數加減 1 個標準差內的資料比例約為 68.26%（約 68%）。"}, {"id": "quiz_ch4_01", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "觀念題", "key_point": "點圖之特性與優勢", "question": "下列關於「點圖 (Dot Plot)」特性的敘述，何者正確？", "options": ["點圖在分組後會完全喪失原始數值的資訊", "點圖適合非常龐大的資料集（如數十萬筆）", "點圖將每個觀測值以點的形式堆疊標記在數線上方，能同時保留原始數值細節並展現數據分佈與集群 (Clustering)", "點圖只能用來呈現屬質名目資料"], "answer": 2, "analysis": "【正確答案】：C。點圖（Dot Plot）非常適合中小型資料集，它直接在水平軸上方將重複數值以小圓點向上疊加，既能一眼看出數據集中位置與極端值，又完整保留了每一筆原始數值（未經組距粗糙化）。"}, {"id": "quiz_ch4_02", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "計算題", "key_point": "百分位數定位公式", "question": "有 n = 19 筆已由小到大排序好的樣本資料。若欲求取「第 75 百分位數 (Q3)」的位置指標 L_75，根據課本標準定位公式 L_p = (n + 1) × (p / 100)，其位置 L_75 為第幾個數值？", "options": ["第 14.25 個數值", "第 15 個數值", "第 15.75 個數值", "第 14 個數值"], "answer": 1, "analysis": "【正確答案】：B。定位公式 L_75 = (19 + 1) × (75 / 100) = 20 × 0.75 = 15。因此第 75 百分位數剛好為排序後的「第 15 個數值」。"}, {"id": "quiz_ch4_03", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "計算題", "key_point": "百分位數內插法計算", "question": "一組排序後的資料中，排序第 5 個數值為 66，第 6 個數值為 76。若某百分位數的位置指標經公式計算為 L_p = 5.40，則利用線性內插法求得該百分位數之數值應為多少？", "options": ["70", "72", "70.4", "68"], "answer": 0, "analysis": "【正確答案】：A。線性內插法公式：Value = 第5個數值 + 0.40 × (第6個數值 - 第5個數值) = 66 + 0.40 × (76 - 66) = 66 + 0.40 × 10 = 66 + 4 = 70。"}, {"id": "quiz_ch4_04", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "觀念題", "key_point": "箱形圖五數綜合", "question": "繪製標準「箱形圖 (Box Plot)」所需的「五數綜合 (Five-Number Summary)」依序包含下列哪五個統計數值？", "options": ["平均數、標準差、變異數、中位數、眾數", "最小值、第一四分位數 (Q1)、中位數 (Q2)、第三四分位數 (Q3)、最大值", "最小值、下內界限、中位數、上內界限、最大值", "Q1、平均數、中位數、Q3、全距"], "answer": 1, "analysis": "【正確答案】：B。箱形圖的骨架由五數綜合構成：Minimum（最小值）、First Quartile (Q1)、Median (Q2)、Third Quartile (Q3)、Maximum（最大值）。中央盒體長度即為四分位距 IQR = Q3 - Q1。"}, {"id": "quiz_ch4_05", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "計算題", "key_point": "四分位距與離群值內界限門檻", "question": "某組資料的第一四分位數 Q1 = 50，第三四分位數 Q3 = 80。請問該資料判定「離群值 (Outliers)」的「上內界限 (Upper Inner Fence)」門檻為多少？", "options": ["110", "125", "95", "140"], "answer": 1, "analysis": "【正確答案】：B。首先計算四分位距：IQR = Q3 - Q1 = 80 - 50 = 30。上內界限門檻公式為：Q3 + 1.5 × IQR = 80 + 1.5 × 30 = 80 + 45 = 125。大於 125 的數值即被判定為離群值。"}, {"id": "quiz_ch4_06", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "計算題", "key_point": "下內界限離群值門檻", "question": "承上題（Q1 = 50, Q3 = 80, IQR = 30），該資料判定離群值的「下內界限 (Lower Inner Fence)」門檻為多少？", "options": ["20", "5", "35", "-5"], "answer": 1, "analysis": "【正確答案】：B。下內界限門檻公式為：Q1 - 1.5 × IQR = 50 - 1.5 × 30 = 50 - 45 = 5。若有數值小於 5，即判定為低端離群值。"}, {"id": "quiz_ch4_07", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "觀念題", "key_point": "由箱形圖判讀偏態形狀", "question": "在箱形圖中，若發現「右側鬍鬚（鬚線）遠長於左側鬍鬚」，且「中位數線偏向盒子的左側（靠近 Q1）」，則該資料分配呈現何種形狀？", "options": ["對稱鐘形分配", "右偏（正偏，Positively Skewed）", "左偏（負偏，Negatively Skewed）", "均勻矩形分配"], "answer": 1, "analysis": "【正確答案】：B。右側鬚線長、中位數靠近 Q1（中位數到 Q3 的距離大於 Q1 到中位數的距離），表示高端數值分布較廣且有較長右拖尾，屬於典型的「右偏（正偏）」分配。"}, {"id": "quiz_ch4_08", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "計算題", "key_point": "皮爾森第一偏態係數計算", "question": "某組資料的算術平均數為 45，中位數為 42，樣本標準差為 9。請問其「皮爾森第一偏態係數 (Pearson's Coefficient of Skewness)」為多少？並呈現何種偏態？", "options": ["+1.0，正偏", "-1.0，負偏", "+0.33，微幅正偏", "+3.0，強烈正偏"], "answer": 0, "analysis": "【正確答案】：A。皮爾森第一偏態係數公式：sk = 3(X̄ - Median) / s = 3(45 - 42) / 9 = 3(3) / 9 = 9 / 9 = +1.0。係數為正值，表示分配呈現「正偏（右偏）」。"}, {"id": "quiz_ch4_09", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "觀念題", "key_point": "皮爾森偏態係數範圍", "question": "皮爾森偏態係數 (sk) 的數值通常落在下列哪一個理論範圍之間？", "options": ["0 到 1 之間", "-1 到 +1 之間", "-3 到 +3 之間", "-∞ 到 +∞ 之間"], "answer": 2, "analysis": "【正確答案】：C。皮爾森偏態係數 sk = 3(X̄ - Median)/s 的值通常界於 -3 到 +3 之間。值接近 0 表示對稱；接近 +3 表示極端正偏；接近 -3 表示極端負偏。"}, {"id": "quiz_ch4_10", "chapter": 4, "chapter_name": "第 4 章：展現與探索資料", "category": "觀念題", "key_point": "列聯表（交叉表）用途", "question": "欲研究「顧客性別（男/女）」與「行動支付偏好（LINE Pay / Apple Pay / 街口）」兩者之間是否存在關聯性，最適當的統計彙整表格為何？", "options": ["直方圖", "次數多邊形", "列聯表（Contingency Table / 交叉分類表）", "莖葉圖"], "answer": 2, "analysis": "【正確答案】：C。列聯表（Contingency Table，又稱交叉表 Cross-tabulation）專門用於同時交叉分類兩個屬質（類別）變數，以分析兩變數間的關聯性或條件機率。"}, {"id": "quiz_ch5_01", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "觀念題", "key_point": "機率三大指派方法", "question": "「擲公正硬幣正面朝上的機率為 1/2」、「氣象局根據過去 30 年歷史氣象數據預報明日降雨機率為 70%」、「某企業高管憑直覺評估新產品成功率為 80%」，這三種指派機率的方法依序分別屬於：", "options": ["古典機率、經驗機率、主觀機率", "經驗機率、古典機率、主觀機率", "古典機率、主觀機率、經驗機率", "主觀機率、經驗機率、古典機率"], "answer": 0, "analysis": "【正確答案】：A。① 假設所有結果發生可能性皆相同之數理推演為「古典機率（Classical）」；② 依據過去實際觀測次數比例指派為「經驗機率（Empirical / 相對頻率法）」；③ 缺乏客觀數據、憑個人信念與經驗評估為「主觀機率（Subjective）」"}, {"id": "quiz_ch5_02", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "易錯陷阱題", "key_point": "互斥事件 vs 獨立事件", "question": "若事件 A 與事件 B 是「互斥事件 (Mutually Exclusive)」且各自機率 P(A) > 0, P(B) > 0，則下列何者「必然成立」？", "options": ["P(A ∩ B) = P(A) × P(B)", "事件 A 與事件 B 必然相互獨立", "P(A ∩ B) = 0，且 A 與 B 絕不可能是獨立事件", "P(A ∪ B) = 1"], "answer": 2, "analysis": "【正確答案】：C。這是機率論極高頻常考陷阱題！「互斥」代表兩事件不可能同時發生，故 P(A ∩ B) = 0。而兩非零事件若要獨立，必須滿足 P(A ∩ B) = P(A)P(B) > 0，因此兩非零機率的互斥事件「絕對不可能是獨立事件」！一旦 A 發生，B 發生的機率立刻降為 0，具有極強的相依性。"}, {"id": "quiz_ch5_03", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "機率一般加法法則", "question": "某商管學院學生中，有 60% 修習統計學 (A)，有 50% 修習經濟學 (B)，有 30% 兩門課都修習 (A ∩ B)。請問隨機抽查一位學生，該生「有修習統計學或經濟學（至少修一門）」的機率 P(A ∪ B) 為何？", "options": ["1.10", "0.80", "0.70", "0.50"], "answer": 1, "analysis": "【正確答案】：B。一般加法法則公式：P(A ∪ B) = P(A) + P(B) - P(A ∩ B) = 0.60 + 0.50 - 0.30 = 0.80。"}, {"id": "quiz_ch5_04", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "餘事件定理（互補法則）", "question": "某抽獎活動每張彩券的中獎機率為 0.10。若小明購買了 3 張彩券，且各張彩券中獎與否相互獨立，請問小明「至少有一張中獎」的機率是多少？", "options": ["0.3000", "0.2710", "0.7290", "0.0010"], "answer": 1, "analysis": "【正確答案】：B。遇到「至少有一個」的機率問題，標準做法是利用餘事件定理（1 減去完全沒有）：單張沒中獎機率為 1 - 0.10 = 0.90。3 張全部都沒中獎的機率 = (0.90)^3 = 0.729。因此「至少有一張中獎」機率 = 1 - 0.729 = 0.2710 (27.1%)。"}, {"id": "quiz_ch5_05", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "條件機率計算", "question": "已知某公司員工中，有 40% 為管理階層 (M)，且為管理階層且擁有碩士學位 (M ∩ G) 的員工佔 10%。若已知某位隨機挑選的員工是管理階層，請問他擁有碩士學位的條件機率 P(G | M) 為何？", "options": ["0.04", "0.25", "0.30", "0.40"], "answer": 1, "analysis": "【正確答案】：B。條件機率定義公式：P(G | M) = P(M ∩ G) / P(M) = 0.10 / 0.40 = 0.25 (25%)。"}, {"id": "quiz_ch5_06", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "獨立事件乘法法則", "question": "某飛機有兩套完全獨立的備用導航系統，每套系統在飛行中故障的機率各自為 0.01。請問在一次飛行中，兩套系統「同時發生故障」導致導航癱瘓的機率是多少？", "options": ["0.02", "0.0001", "0.001", "0.9999"], "answer": 1, "analysis": "【正確答案】：B。因為兩系統相互獨立，同時故障的聯合機率使用獨立事件乘法法則：P(系統1故障 ∩ 系統2故障) = P(系統1故障) × P(系統2故障) = 0.01 × 0.01 = 0.0001。"}, {"id": "quiz_ch5_07", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "貝氏定理（事後機率）", "question": "某檢驗試劑檢測某罕見疾病（罹病率 P(D) = 0.01）。若患者真有病，檢驗呈陽性的機率為 95% (P(+|D) = 0.95)；若無病，呈偽陽性的機率為 5% (P(+|D^c) = 0.05)。現某人檢驗呈陽性 (+)，利用貝氏定理求其「真正罹病的事後機率 P(D | +)」約為多少？", "options": ["95%", "50%", "約 16.1%", "約 5%"], "answer": 2, "analysis": "【正確答案】：C。貝氏定理公式：P(D|+) = [P(D)P(+|D)] / [P(D)P(+|D) + P(D^c)P(+|D^c)] = (0.01 × 0.95) / [(0.01 × 0.95) + (0.99 × 0.05)] = 0.0095 / (0.0095 + 0.0495) = 0.0095 / 0.0590 ≈ 0.161 (16.1%)。這說明罕見疾病下，即使呈陽性，真正罹病機率也僅約 16.1%。"}, {"id": "quiz_ch5_08", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "觀念題", "key_point": "排列 vs 組合判定", "question": "從 10 位候選人中選出「1 位會長、1 位副會長、1 位秘書」的可能方法數，與從 10 位候選人中選出「3 位不分職務的執行委員」的可能方法數，分別應使用哪種計數公式？", "options": ["兩者皆使用組合公式 10C3", "前者使用排列公式 10P3，後者使用組合公式 10C3", "前者使用組合公式 10C3，後者使用排列公式 10P3", "兩者皆使用乘法原理 10 × 9 × 8"], "answer": 1, "analysis": "【正確答案】：B。會長、副會長、秘書具有明確的「職務順序/角色差異」，順序改變代表不同人事安排，故屬於「排列（Permutation，10P3 = 720）」；而三位委員彼此地位完全平等無順序差異，屬於「組合（Combination，10C3 = 120）」"}, {"id": "quiz_ch5_09", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "計算題", "key_point": "組合數計算", "question": "某公司董事會有 8 位董事，現欲從中隨機遴選 3 位董事組成審計委員會，請問共有多少種不同的組隊方式？", "options": ["24 種", "56 種", "336 種", "120 種"], "answer": 1, "analysis": "【正確答案】：B。使用組合公式：8C3 = 8! / (3! × 5!) = (8 × 7 × 6) / (3 × 2 × 1) = 336 / 6 = 56 種。"}, {"id": "quiz_ch5_10", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "觀念題", "key_point": "機率公理", "question": "下列哪一個數值「絕對不可能」作為統計學中的機率值？", "options": ["0", "1", "0.000001", "-0.15"], "answer": 3, "analysis": "【正確答案】：D。機率公理基本要求：對於任何事件 A，機率值必須介於 0 與 1 之間（0 ≤ P(A) ≤ 1）。機率絕對不能為負數，亦不能大於 1。"}, {"id": "quiz_ch5_11", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "易錯陷阱題", "key_point": "獨立事件之條件機率判斷", "question": "若事件 A 與事件 B 相互獨立，且 P(A) = 0.40, P(B) = 0.30，請問條件機率 P(A | B) 等於多少？", "options": ["0.12", "0.30", "0.40", "0.70"], "answer": 2, "analysis": "【正確答案】：C。根據獨立事件的核心定義：事件 B 是否發生完全不影響事件 A 發生的機率，因此 P(A | B) = P(A) = 0.40。勿誤乘以 0.30！"}, {"id": "quiz_ch5_12", "chapter": 5, "chapter_name": "第 5 章：機率觀念概述", "category": "觀念題", "key_point": "大數法則", "question": "在經驗機率中，「大數法則 (Law of Large Numbers)」所闡述的核心意涵為何？", "options": ["樣本數愈大，母體平均數就會跟著變大", "當試驗次數進行愈多次（趨近無限大），事件發生的相對頻率將會愈來愈趨近於其真實的理論機率", "只要樣本數超過 30，資料就必然呈現常態分配", "數值很大的數據具有較高的代表性"], "answer": 1, "analysis": "【正確答案】：B。大數法則指出：隨著隨機試驗重複進行的次數不斷增加，觀測到的經驗相對次數會以極高機率收斂收歛到客觀的理論機率值。"}, {"id": "quiz_ch6_01", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "離散型機率分配兩大基本條件", "question": "設 X 為離散型隨機變數，其機率函數 P(X = x) 必須滿足哪兩項基本條件？", "options": ["① P(x) ≥ 0；② 所有可能結果之機率總和 ∑P(x) = 1", "① P(x) 必須相等；② 期望值必須大於 0", "① P(x) ≤ 0.5；② 標準差等於 1", "① P(x) 可以為負；② 變異數必須等於平均數"], "answer": 0, "analysis": "【正確答案】：A。離散型機率分配兩大鐵律：第一，每一項結果的機率值皆介於 0 與 1 之間（0 ≤ P(x) ≤ 1）；第二，樣本空間中所有互斥且周延結果的機率總和恆等於 1（∑P(x) = 1）。"}, {"id": "quiz_ch6_02", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "計算題", "key_point": "離散隨機變數期望值計算", "question": "某彩券每張售價 100 元，有 10% 機率獲得獎金 500 元，有 90% 機率獲得獎金 0 元。請問該彩券「獎金收入」的期望值 E(X) 為多少？", "options": ["100 元", "50 元", "500 元", "0 元"], "answer": 1, "analysis": "【正確答案】：B。離散隨機變數期望值公式：E(X) = ∑[x · P(x)] = 500 × 0.10 + 0 × 0.90 = 50 + 0 = 50 元。（買一張預期虧損 50 元）。"}, {"id": "quiz_ch6_03", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "二項分配四大成立條件", "question": "下列何者「不是」隨機試驗符合「二項機率分配 (Binomial Distribution)」的必備假設條件？", "options": ["試驗次數 n 為固定常數", "每次試驗的結果只有兩種（成功或失敗）", "每次試驗成功的機率 π 會隨著前一次的結果而改變", "各次試驗之間必須相互獨立"], "answer": 2, "analysis": "【正確答案】：C。二項分配四大條件：① 試驗次數 n 固定；② 每次結果互斥只有兩類（成功/失敗）；③ 每次成功的機率 π 維持固定不變；④ 各次試驗相互獨立。若成功機率隨抽樣改變，則屬於「超幾何分配」。"}, {"id": "quiz_ch6_04", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "計算題", "key_point": "二項分配平均數與標準差公式", "question": "某工廠生產之零件瑕疵率為 π = 0.04。今隨機抽取 n = 100 件零件，令 X 代表其中的瑕疵品數量。請問 X 的「平均數 μ」與「標準差 σ」分別是多少？", "options": ["μ = 4，σ = 1.96", "μ = 4，σ = 3.84", "μ = 4，σ = 2.00", "μ = 0.04，σ = 0.02"], "answer": 0, "analysis": "【正確答案】：A。二項分配平均數 μ = nπ = 100 × 0.04 = 4。變異數 σ^2 = nπ(1 - π) = 100 × 0.04 × 0.96 = 3.84。標準差 σ = √3.84 ≈ 1.9596 ≈ 1.96。"}, {"id": "quiz_ch6_05", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "計算題", "key_point": "二項機率公式計算", "question": "某射擊選手每次命中靶心的機率為 π = 0.8。今連續射擊 n = 3 發，且各發相互獨立。請問「剛好命中 2 發」的機率 P(X = 2) 為多少？", "options": ["0.512", "0.384", "0.128", "0.640"], "answer": 1, "analysis": "【正確答案】：B。二項分配公式：P(x) = nCx · π^x · (1-π)^(n-x)。P(2) = 3C2 × (0.8)^2 × (0.2)^1 = 3 × 0.64 × 0.2 = 0.384 (38.4%)。"}, {"id": "quiz_ch6_06", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "二項分配偏態形狀特徵", "question": "關於二項機率分配形狀與成功機率 π 的關係，下列敘述何者正確？", "options": ["當 π = 0.5 時，不論 n 大小，二項分配必然呈現完全對稱", "當 π < 0.5 時，二項分配呈現左偏", "當 π > 0.5 時，二項分配呈現右偏", "二項分配永遠都是右偏，不可能對稱"], "answer": 0, "analysis": "【正確答案】：A。二項分配圖形形狀規律：當 π = 0.5 時，分配必然左右完全對稱；當 π < 0.5 時，高峰偏向左側，形成「右偏（正偏）」；當 π > 0.5 時，高峰偏向右側，形成「左偏（負偏）」。此外，隨著 n 愈大，分配也會愈趨向對稱。"}, {"id": "quiz_ch6_07", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "易錯陷阱題", "key_point": "超幾何分配本質特徵", "question": "「超幾何機率分配 (Hypergeometric Distribution)」與「二項機率分配」最關鍵的本質差異在於下列何者？", "options": ["超幾何分配的每次試驗結果有三種以上", "超幾何分配來自有限母體且為「不放回抽樣 (Without Replacement)」，導致各次抽樣「不獨立」且成功機率會改變", "超幾何分配只能用於連續型資料", "超幾何分配的期望值永遠等於變異數"], "answer": 1, "analysis": "【正確答案】：B。超幾何分配應用於「有限母體 N」、「不放回抽樣」情境。因為抽出一件後不放回，母體結構改變，下一次抽到成功的機率會發生變化，試驗之間不再相互獨立。"}, {"id": "quiz_ch6_08", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "二項近似超幾何分配條件", "question": "在統計實務中，當母體總數為 N、樣本大小為 n 時，在何種條件下可以使用計算較簡便的「二項分配」來良好近似「超幾何分配」？", "options": ["抽樣比例 n / N ≤ 0.05（樣本數小於母體的 5%）", "樣本數 n 必須大於 100", "母體數 N 必須小於 30", "抽樣比例 n / N ≥ 0.20"], "answer": 0, "analysis": "【正確答案】：A。經驗法則規定：當抽樣比例小於等於 5%（n/N ≤ 0.05）時，不放回抽樣對母體機率的改變微乎其微，可以直接以二項分配作為超幾何分配的近似。"}, {"id": "quiz_ch6_09", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "卜瓦松分配適用情境", "question": "下列哪一種商業隨機現象，最適合採用「卜瓦松機率分配 (Poisson Distribution)」來塑模？", "options": ["連續丟擲公正骰子 10 次中出現 6 點的次數", "客服中心在平日上午 10:00 至 11:00（特定時間區間內）接到的進線電話總數", "檢驗 5 位面試者中有幾位具有碩士學位", "明天是否會下雨的結果"], "answer": 1, "analysis": "【正確答案】：B。卜瓦松分配描述的是在「某特定連續區間（時間、面積、距離或體積）」內，某罕見事件發生的「次數（Counts）」，如每小時進線電話數、每平方公尺布料瑕疵數、每分鐘高速公路車禍數。"}, {"id": "quiz_ch6_10", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "易錯陷阱題", "key_point": "卜瓦松分配期望值與變異數之關係", "question": "若隨機變數 X 服從參數為 μ 的卜瓦松分配（X ~ Poisson(μ)），則該分配的「變異數 σ^2」等於多少？", "options": ["μ^2", "√μ", "μ", "μ(1 - μ)"], "answer": 2, "analysis": "【正確答案】：C。這是卜瓦松分配最著名的數理指紋特徵：**期望值等於變異數**，即 E(X) = σ^2 = μ。標準差則為 √μ。"}, {"id": "quiz_ch6_11", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "計算題", "key_point": "卜瓦松機率計算", "question": "某急診室平均每小時抵達 μ = 2 位急診病患，且符合卜瓦松分配。請問在未來的某一小時內，「剛好有 0 位病患抵達」的機率是多少？（已知 e ≈ 2.71828, e^(-2) ≈ 0.1353）", "options": ["0", "0.1353", "0.2707", "0.5000"], "answer": 1, "analysis": "【正確答案】：B。卜瓦松分配公式 P(x) = (μ^x · e^(-μ)) / x!。當 x = 0 時，P(0) = (2^0 · e^(-2)) / 0! = (1 · 0.1353) / 1 = 0.1353 (13.53%)。"}, {"id": "quiz_ch6_12", "chapter": 6, "chapter_name": "第 6 章：離散型機率分配", "category": "觀念題", "key_point": "卜瓦松近似二項分配條件", "question": "當試驗次數 n 很大且成功機率 π 很小時，可用卜瓦松分配近似二項分配。教材規範通常在何種門檻下建議套用？", "options": ["n ≥ 100 且 nπ ≤ 10，令 μ = nπ", "n ≥ 30 且 nπ ≥ 5", "n ≤ 20 且 π = 0.5", "n / N ≤ 0.05"], "answer": 0, "analysis": "【正確答案】：A。當試驗次數龐大（n ≥ 100）且成功機率極小（罕見事件，通常 nπ ≤ 10）時，以 μ = nπ 代入卜瓦松分配可高度精確近似二項分配，大幅簡化階乘組合計算。"}, {"id": "quiz_ch7_01", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "易錯陷阱題", "key_point": "連續型隨機變數單點機率為零", "question": "設 X 為連續型隨機變數（如常態分配或均勻分配）。請問 X 剛好等於某一個特定常數 c 的機率，即 P(X = c)，等於多少？", "options": ["機率密度函數的高度 f(c)", "0", "0.5", "1 / (b - a)"], "answer": 1, "analysis": "【正確答案】：B。這是連續型機率分配最重要的理論鐵律：對於連續隨機變數而言，機率是以曲線下的「區間面積」來定義。因為單一單點的寬度為零（dx = 0），面積為 0，故在任意單點的機率恆為 0：P(X = c) = 0。因此 P(X ≤ c) 與 P(X < c) 完全相等。"}, {"id": "quiz_ch7_02", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "均勻分配高度與平均數", "question": "連續隨機變數 X 服從區間 [10, 30] 上的均勻機率分配 (X ~ U(10, 30))。請問其機率密度函數高度 f(x) 與平均數 μ 分別是多少？", "options": ["f(x) = 1/20 = 0.05，平均數 μ = 20", "f(x) = 1/30，平均數 μ = 15", "f(x) = 0.10，平均數 μ = 20", "f(x) = 20，平均數 μ = 10"], "answer": 0, "analysis": "【正確答案】：A。均勻分配高度 f(x) = 1 / (b - a) = 1 / (30 - 10) = 1/20 = 0.05。平均數為中點：μ = (a + b) / 2 = (10 + 30) / 2 = 20。"}, {"id": "quiz_ch7_03", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "均勻分配標準差公式", "question": "承上題（X ~ U(10, 30)），其標準差 σ 應使用公式 (b - a) / √12 計算，其數值約為多少？", "options": ["20", "5.77", "10.00", "3.33"], "answer": 1, "analysis": "【正確答案】：B。均勻分配變異數公式 σ^2 = (b - a)^2 / 12 = (20)^2 / 12 = 400 / 12 = 33.333。標準差 σ = √(33.333) = (30 - 10) / √12 = 20 / 3.4641 ≈ 5.77。"}, {"id": "quiz_ch7_04", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "均勻分配區間機率", "question": "若 X ~ U(10, 30)，請問 P(15 ≤ X ≤ 25) 的機率為多少？", "options": ["0.25", "0.50", "0.75", "0.10"], "answer": 1, "analysis": "【正確答案】：B。長方形面積 = 底 × 高 = (x2 - x1) × (1 / (b - a)) = (25 - 15) × (1 / 20) = 10 / 20 = 0.50 (50%)。"}, {"id": "quiz_ch7_05", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "觀念題", "key_point": "常態機率分配五大核心特徵", "question": "下列關於「常態機率分配 (Normal Probability Distribution)」的特徵敘述，何者「錯誤」？", "options": ["常態曲線呈現對稱鐘形，且只具備單一波峰（單峰 Unimodal）", "平均數、中位數與眾數三者在數值上完全相等，且位於曲線正中心", "常態曲線兩端向左右無限延伸，並在距離平均數 4 個標準差處與橫軸相交閉合", "常態曲線下的總面積嚴格等於 1.00，以平均數為界左右各占 0.50"], "answer": 2, "analysis": "【正確答案】：C。選項 C 錯誤。常態曲線具有「漸近線（Asymptotic）」特性：兩端雖不斷向左右延伸且愈來愈逼近水平橫軸，但在理論上「永遠不會真正觸碰或切穿橫軸」，不可能相交閉合。"}, {"id": "quiz_ch7_06", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "觀念題", "key_point": "標準常態分配參數", "question": "「標準常態分配 (Standard Normal Distribution, Z 分配)」的平均數 μ 與標準差 σ 分別被固定定義為多少？", "options": ["μ = 1, σ = 0", "μ = 0, σ = 1", "μ = 100, σ = 15", "μ = 0, σ = 0"], "answer": 1, "analysis": "【正確答案】：B。標準常態分配記為 Z ~ N(0, 1)，其平均數固定為 0，變異數與標準差皆固定為 1。"}, {"id": "quiz_ch7_07", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "標準化 Z 值計算", "question": "某品牌輪胎壽命呈常態分配，平均數 μ = 50,000 公里，標準差 σ = 4,000 公里。若某顆輪胎使用 56,000 公里，其標準化 z 值為多少？", "options": ["+1.50", "+1.25", "-1.50", "+2.00"], "answer": 0, "analysis": "【正確答案】：A。標準化 z 值公式：z = (X - μ) / σ = (56,000 - 50,000) / 4,000 = 6,000 / 4,000 = +1.50。"}, {"id": "quiz_ch7_08", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "常態分配查表求單側極端機率", "question": "承上題（μ = 50,000, σ = 4,000），求輪胎壽命超過 56,000 公里（即 P(X > 56,000)）的機率。已知查表得 z = 0 至 z = 1.50 之間的曲線面積為 0.4332。", "options": ["0.4332", "0.9332", "0.0668", "0.5668"], "answer": 2, "analysis": "【正確答案】：C。右半邊總面積為 0.5000。所求右尾極端面積 P(Z > 1.50) = 0.5000 - P(0 ≤ Z ≤ 1.50) = 0.5000 - 0.4332 = 0.0668 (6.68%)。"}, {"id": "quiz_ch7_09", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "計算題", "key_point": "反查 Z 值求特定百分位數門檻", "question": "某學院碩士班考試成績呈常態分配，平均數為 70 分，標準差為 10 分。校方決定錄取前 2.5% 的考生。已知對應正側 2.5% 右尾面積的臨界 z 值為 1.96（即 P(0 ≤ Z ≤ 1.96) = 0.4750）。請問錄取最低門檻分數應設為幾分？", "options": ["85 分", "89.6 分", "90 分", "92.5 分"], "answer": 1, "analysis": "【正確答案】：B。逆向求解數值公式：X = μ + z · σ = 70 + (1.96 × 10) = 70 + 19.6 = 89.6 分。"}, {"id": "quiz_ch7_10", "chapter": 7, "chapter_name": "第 7 章：連續型機率分配", "category": "易錯陷阱題", "key_point": "期中考範圍關鍵警示：指數分配不考", "question": "【期中考重點提醒】：關於第 7 章各分配之期中考考核範圍，下列何者「正確」？", "options": ["第 7 章均勻分配、常態分配與指數分配全部都要考", "依據課本目錄原稿手寫劃叉標註，「7.5 指數分配族系（習題 31 與 57 題）」明確不考，正式考試聚焦於均勻分配與常態分配", "常態分配不考，只考指數分配", "第 7 章所有內容均不納入期中考"], "answer": 1, "analysis": "【正確答案】：B。重要期中考範圍警示：課本目錄照片原稿中「7.5 指數分配」下方已手寫「指數分配不考」，且作業第 31、57 題已被打叉 (X)。因此期中考連續型分配請全力準備「均勻分配」與「常態分配 Z 值轉換與查表計算」。"}];
 
-    function renderCards() {
-        const keyword = document.getElementById('search-input').value.trim().toLowerCase();
-        const container = document.getElementById('cards-container');
-        container.innerHTML = '';
+    // 狀態管理
+    let currentMainMode = 'hw'; // 'hw' or 'quiz'
+    let currentHwChapter = 0;
+    let currentQuizChapter = 0;
+    let currentQuizCategory = 'ALL';
+    let filterWrongOnly = false;
+    let quizUserAnswers = {}; // qId -> selectedOptionIndex (0..3)
+    let activeQuizList = [...quizData];
 
-        const filtered = questionsData.filter(q => {
-            const matchCh = (currentChapter === 0) || (q.chapter === currentChapter);
-            const matchKw = !keyword || 
-                q.q_num.toLowerCase().includes(keyword) ||
-                q.title.toLowerCase().includes(keyword) ||
-                q.question.toLowerCase().includes(keyword) ||
-                q.answer.toLowerCase().includes(keyword);
-            return matchCh && matchKw;
+    // 主功能切換
+    function switchMainMode(mode) {
+        currentMainMode = mode;
+        const btnHw = document.getElementById('btn-mode-hw');
+        const btnQuiz = document.getElementById('btn-mode-quiz');
+        const viewHw = document.getElementById('hw-view');
+        const viewQuiz = document.getElementById('quiz-view');
+
+        if (mode === 'hw') {
+            btnHw.classList.add('active');
+            btnQuiz.classList.remove('active');
+            viewHw.classList.add('active');
+            viewQuiz.classList.remove('active');
+            renderHwCards();
+        } else {
+            btnHw.classList.remove('active');
+            btnQuiz.classList.add('active');
+            viewHw.classList.remove('active');
+            viewQuiz.classList.add('active');
+            renderQuizList();
+            updateQuizDashboard();
+        }
+    }
+
+    // ==================== 功能一：作業速查渲染 ====================
+    function setHwChapter(ch, btn) {
+        currentHwChapter = ch;
+        btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderHwCards();
+    }
+
+    function renderHwCards() {
+        const container = document.getElementById('hw-cards-container');
+        const query = document.getElementById('hw-search-input').value.trim().toLowerCase();
+
+        const filtered = hwQuestionsData.filter(q => {
+            const matchCh = (currentHwChapter === 0) || (q.chapter === currentHwChapter);
+            const matchQuery = !query || 
+                q.q_num.toLowerCase().includes(query) ||
+                q.title.toLowerCase().includes(query) ||
+                q.question.toLowerCase().includes(query) ||
+                q.answer.toLowerCase().includes(query);
+            return matchCh && matchQuery;
         });
 
         if (filtered.length === 0) {
-            container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:16px;">無符合條件的題目，請重新輸入關鍵字。</div>';
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <div class="empty-icon">🔍</div>
+                    <div style="font-weight:700; font-size:16px;">查無相符的作業題目</div>
+                    <div style="font-size:13px; margin-top:4px;">請嘗試更換章節或清除關鍵字。</div>
+                </div>`;
             return;
         }
 
-        filtered.forEach(q => {
-            const card = document.createElement('div');
-            card.className = 'card';
-
-            let calcStepsHtml = '';
-            q.lines.forEach((l, idx) => {
-                calcStepsHtml += `
-                    <div class="calc-step">
-                        <span class="step-badge">步驟 ${idx + 1}</span>
-                        <strong>${l.label}</strong> <code>${l.math}</code> ${l.unit}
-                    </div>
-                `;
-            });
-
-            card.innerHTML = `
+        container.innerHTML = filtered.map(q => `
+            <div class="card">
                 <div class="card-header">
                     <span class="card-title">${q.q_num}</span>
-                    <span class="card-pill">第 ${q.chapter} 章</span>
+                    <span class="card-pill">${q.chapter_name}</span>
                 </div>
                 <div class="card-body">
-                    <div style="font-weight:700; font-size:15px; color:var(--navy-accent);">${q.title}</div>
-                    <div class="q-box">${q.question}</div>
-                    <div class="calc-box" style="padding:4px; background:#F8FAFC;">
-                        <img src="${q.card_img}" style="width:100%; height:auto; display:block; border-radius:6px;" alt="核心公式與計算歷程圖解">
+                    <div style="font-weight:700; font-size:14.5px; color:var(--text-primary);">${q.title}</div>
+                    
+                    <div class="q-box">
+                        <strong style="color:var(--navy-accent); display:block; margin-bottom:4px;">【原著課本題目】</strong>
+                        ${q.question}
                     </div>
+
+                    <div class="calc-preview" onclick="openModal('${q.card_img}', '${q.q_num} 核心公式與計算歷程')">
+                        <img src="${q.card_img}" alt="${q.q_num} 公式卡片" loading="lazy">
+                    </div>
+
                     <div class="ans-badge">
+                        <span style="font-size:12px; opacity:0.85; display:block; margin-bottom:2px;">【官方標準答案速查】</span>
                         ${q.answer}
                     </div>
-                    <div class="chart-preview" onclick="openModal('${q.fig}', '${q.q_num} - ${q.title}')">
-                        <img src="${q.fig}" alt="統計圖表" loading="lazy" onerror="this.style.display='none'">
-                        <div class="chart-caption">🔍 點擊放大查看 300 DPI 分配圖形</div>
+
+                    <div class="chart-preview" onclick="openModal('${q.fig}', '${q.q_num} 統計分配圖形')">
+                        <img src="${q.fig}" alt="${q.q_num} 統計圖表" loading="lazy">
+                        <div class="chart-caption">🔍 點擊檢視 300 DPI 統計分配圖</div>
                     </div>
                 </div>
-            `;
-            container.appendChild(card);
-        });
+            </div>
+        `).join('');
     }
 
-    function setChapter(ch, btn) {
-        currentChapter = ch;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // ==================== 功能二：考點刷題渲染 ====================
+    function setQuizChapter(ch, btn) {
+        currentQuizChapter = ch;
+        btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderCards();
+        renderQuizList();
     }
 
-    function toggleTheme() {
-        const isDark = document.body.getAttribute('data-theme') === 'dark';
-        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    function setQuizCategory(cat, btn) {
+        currentQuizCategory = cat;
+        btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderQuizList();
     }
 
+    function toggleWrongOnly(btn) {
+        filterWrongOnly = !filterWrongOnly;
+        btn.style.background = filterWrongOnly ? '#FEE2E2' : 'var(--bg-card)';
+        btn.style.borderColor = filterWrongOnly ? '#DC2626' : 'var(--border-strong)';
+        btn.style.color = filterWrongOnly ? '#991B1B' : 'var(--text-primary)';
+        renderQuizList();
+    }
+
+    function shuffleQuiz() {
+        activeQuizList.sort(() => Math.random() - 0.5);
+        renderQuizList();
+    }
+
+    function resetQuiz() {
+        if (confirm('確定要清空作答記錄並重置進度嗎？')) {
+            quizUserAnswers = {};
+            filterWrongOnly = false;
+            updateQuizDashboard();
+            renderQuizList();
+        }
+    }
+
+    function selectOption(qId, optIdx) {
+        if (quizUserAnswers[qId] !== undefined) return; // 已作答不可重複改選
+
+        quizUserAnswers[qId] = optIdx;
+        updateQuizDashboard();
+        
+        // 局部更新該題 DOM 狀態
+        const cardElem = document.getElementById(`quiz-card-${qId}`);
+        if (!cardElem) return;
+        
+        const qObj = quizData.find(q => q.id === qId);
+        const optElems = cardElem.querySelectorAll('.option-item');
+        
+        optElems.forEach((elem, idx) => {
+            elem.classList.add('locked');
+            if (idx === qObj.answer) {
+                elem.classList.add('correct');
+            }
+            if (idx === optIdx && idx !== qObj.answer) {
+                elem.classList.add('wrong');
+            }
+        });
+
+        const analysisBox = cardElem.querySelector('.analysis-box');
+        if (analysisBox) {
+            analysisBox.classList.add('show');
+        }
+    }
+
+    function updateQuizDashboard() {
+        const total = quizData.length;
+        const answeredIds = Object.keys(quizUserAnswers);
+        const answeredCount = answeredIds.length;
+        
+        let correctCount = 0;
+        let wrongCount = 0;
+        
+        answeredIds.forEach(qid => {
+            const q = quizData.find(item => item.id === qid);
+            if (q) {
+                if (quizUserAnswers[qid] === q.answer) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            }
+        });
+
+        const rate = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+        const progress = Math.round((answeredCount / total) * 100);
+
+        document.getElementById('stat-total').innerText = `${total} 題`;
+        document.getElementById('stat-answered').innerText = `${answeredCount} 題`;
+        document.getElementById('stat-correct').innerText = correctCount;
+        document.getElementById('stat-wrong').innerText = wrongCount;
+        document.getElementById('stat-rate').innerText = `${rate}%`;
+        document.getElementById('wrong-count-badge').innerText = wrongCount;
+        document.getElementById('quiz-progress-fill').style.width = `${progress}%`;
+    }
+
+    function renderQuizList() {
+        const container = document.getElementById('quiz-list-container');
+        const query = document.getElementById('quiz-search-input').value.trim().toLowerCase();
+        const letters = ['A', 'B', 'C', 'D'];
+
+        const filtered = activeQuizList.filter(q => {
+            const matchCh = (currentQuizChapter === 0) || (q.chapter === currentQuizChapter);
+            const matchCat = (currentQuizCategory === 'ALL') || (q.category === currentQuizCategory);
+            const matchWrong = !filterWrongOnly || (quizUserAnswers[q.id] !== undefined && quizUserAnswers[q.id] !== q.answer);
+            const matchQuery = !query ||
+                q.question.toLowerCase().includes(query) ||
+                q.key_point.toLowerCase().includes(query) ||
+                q.analysis.toLowerCase().includes(query) ||
+                q.options.some(opt => opt.toLowerCase().includes(query));
+            return matchCh && matchCat && matchWrong && matchQuery;
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">${filterWrongOnly ? '🎉' : '🔍'}</div>
+                    <div style="font-weight:700; font-size:16px;">${filterWrongOnly ? '目前沒有做錯的題目！' : '查無相符的選擇試題'}</div>
+                    <div style="font-size:13px; margin-top:4px;">${filterWrongOnly ? '太棒了！所有已作答的題目皆全對！' : '請嘗試切換章節、題型或清除關鍵字。'}</div>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map((q, idx) => {
+            const userAnswer = quizUserAnswers[q.id];
+            const isAnswered = (userAnswer !== undefined);
+            const isCorrect = isAnswered && (userAnswer === q.answer);
+
+            return `
+            <div class="quiz-card" id="quiz-card-${q.id}">
+                <div class="quiz-card-header">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="quiz-q-num">第 ${q.chapter} 章 考點</span>
+                        <div class="quiz-badges">
+                            <span class="quiz-tag category">${q.category}</span>
+                            <span class="quiz-tag">考點：${q.key_point}</span>
+                        </div>
+                    </div>
+                    ${isAnswered ? `
+                        <span style="font-size:13px; font-weight:800; color:${isCorrect ? '#059669' : '#DC2626'};">
+                            ${isCorrect ? '✅ 答對' : '❌ 答錯'}
+                        </span>` : ''}
+                </div>
+
+                <div class="quiz-question-text">
+                    ${q.question}
+                </div>
+
+                <div class="options-list">
+                    ${q.options.map((opt, optIdx) => {
+                        let extraClass = '';
+                        if (isAnswered) {
+                            extraClass += ' locked';
+                            if (optIdx === q.answer) {
+                                extraClass += ' correct';
+                            } else if (optIdx === userAnswer) {
+                                extraClass += ' wrong';
+                            }
+                        }
+                        return `
+                        <div class="option-item${extraClass}" onclick="selectOption('${q.id}', ${optIdx})">
+                            <div class="opt-letter">${letters[optIdx]}</div>
+                            <div>${opt}</div>
+                        </div>`;
+                    }).join('')}
+                </div>
+
+                <div class="analysis-box${isAnswered ? ' show' : ''}">
+                    <div class="analysis-title">
+                        <span>💡 考點解析與正誤逐項說明</span>
+                        <span style="font-size:12px; font-weight:normal; opacity:0.85;">（標準答案：選項 ${letters[q.answer]}）</span>
+                    </div>
+                    <div style="line-height:1.6;">${q.analysis}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    // ==================== Modal 與主題切換 ====================
     function openModal(src, caption) {
-        document.getElementById('modal-img').src = src;
-        document.getElementById('modal-caption').innerText = caption;
-        document.getElementById('image-modal').classList.add('open');
+        const modal = document.getElementById('image-modal');
+        const img = document.getElementById('modal-img');
+        const cap = document.getElementById('modal-caption');
+        img.src = src;
+        cap.innerText = caption;
+        modal.classList.add('open');
     }
 
     function closeModal() {
         document.getElementById('image-modal').classList.remove('open');
     }
 
-    // 初始化渲染
-    renderCards();
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = (current === 'dark') ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    }
+
+    // 初始化載入
+    (function init() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        renderHwCards();
+        updateQuizDashboard();
+    })();
 </script>
+
 </body>
 </html>
