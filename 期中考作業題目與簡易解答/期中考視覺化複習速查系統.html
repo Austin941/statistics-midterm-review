@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>商用統計學期中總複習 ＆ 考點互動刷題系統</title>
     <style>
         :root {
@@ -69,13 +69,14 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* Header */
         header {
             background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-secondary) 100%);
             color: white;
-            padding: 24px 20px 20px;
+            padding: max(20px, env(safe-area-inset-top)) 20px 20px;
             box-shadow: 0 4px 24px rgba(15, 40, 71, 0.3);
             position: sticky;
             top: 0;
@@ -583,12 +584,93 @@
             cursor: pointer;
         }
 
-        /* Responsive */
+        /* Touch & Tap optimizations */
+        .option-item, .nav-btn, .mode-btn, .tab-btn {
+            touch-action: manipulation;
+        }
+        .option-item {
+            min-height: 48px;
+        }
+
+        /* Mobile Responsive Enhancements */
         @media (max-width: 768px) {
-            .cards-grid { grid-template-columns: 1fr; }
-            .quiz-dashboard { flex-direction: column; align-items: flex-start; }
-            .brand-wrap h1 { font-size: 18px; }
-            .mode-btn { font-size: 13.5px; padding: 8px 10px; }
+            header {
+                padding: max(14px, env(safe-area-inset-top)) 14px 14px;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .header-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .nav-btn {
+                font-size: 11.5px;
+                padding: 6px 4px;
+                justify-content: center;
+                text-align: center;
+                white-space: nowrap;
+            }
+            .brand-wrap h1 { font-size: 17px; }
+            .mode-switcher {
+                flex-direction: column;
+                gap: 4px;
+                padding: 4px;
+            }
+            .mode-btn {
+                font-size: 13px;
+                padding: 9px 12px;
+                justify-content: flex-start;
+            }
+            .container {
+                padding: 14px 12px 48px;
+            }
+            .search-box {
+                font-size: 16px !important; /* 避免 iOS Safari 點擊聚焦時自動放大畫面 */
+                padding: 10px 14px;
+            }
+            .filter-tabs {
+                gap: 6px;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 5px 11px;
+            }
+            .cards-grid { grid-template-columns: 1fr; gap: 14px; }
+            .quiz-dashboard {
+                padding: 14px 12px;
+                gap: 12px;
+            }
+            .stat-group {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px 6px;
+                width: 100%;
+            }
+            .stat-val {
+                font-size: 18px;
+            }
+            .quiz-dashboard .header-actions {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+                width: 100%;
+            }
+            .quiz-card {
+                padding: 16px 14px;
+                border-radius: 14px;
+            }
+            .quiz-question-text {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            .option-item {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
